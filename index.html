@@ -314,6 +314,50 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   .card,.btn,.visit,.chip,.fav{transition:none}
   .lore-overlay,.lore-box{animation:none}
 }
+/* ───────────────────────── DARK MODE (MÀU ĐỎ CHERRY + XÁM LẠNH) ───────────────────────── */
+[data-theme="dark"] {
+  --bg: #101014;
+  --card: #18181d;
+  --line: #3b1b26;
+  --rose: #e61c4d;
+  --rose-deep: #b31238;
+  --head: #ffccd8;
+  --ink: #c4abb4;
+  --muted: #856b76;
+  --green: #6d8a57;
+}
+[data-theme="dark"] body {
+  background-image:
+    radial-gradient(rgba(230, 28, 77, 0.15) 1.2px, transparent 1.3px),
+    radial-gradient(900px 540px at 50% -8%, #161214, transparent 62%),
+    radial-gradient(820px 620px at -8% 30%, rgba(230, 28, 77, 0.08), transparent 56%),
+    radial-gradient(760px 580px at 108% 82%, rgba(230, 28, 77, 0.08), transparent 58%);
+}
+[data-theme="dark"] .drop {
+  background: radial-gradient(circle at 30% 30%, #a01136, #4a0314 76%);
+  opacity: 0.7 !important; 
+}
+[data-theme="dark"] .topbar { background: rgba(16, 16, 20, 0.88); }
+[data-theme="dark"] .lore-overlay { background: rgba(10, 10, 12, 0.75); }
+
+/* Nút Công tắc Sáng/Tối */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--head);
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+.theme-toggle:hover {
+  border-color: var(--rose);
+  color: var(--rose);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(230, 28, 77, 0.2);
+}
 </style>
 </head>
 <body>
@@ -350,6 +394,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
     <a class="btn btn-primary" href="#garden">Dạo vườn 🍒</a>
     <!-- [LINK FACEBOOK] dán link Facebook vào href bên dưới -->
     <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Facebook</a>
+  <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>  
   </div>
 
   <p class="gate-hint reveal">bước qua cổng để gặp chồng iu</p>
@@ -361,6 +406,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   <nav class="topbar">
     <div class="topbar-in">
       <a class="brand" href="#">🍒 Vườn Anh Đào của Sherry</a>
+      <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
       <a class="back" href="#">← Về cổng vườn</a>
     </div>
   </nav>
@@ -1084,6 +1130,38 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
   }, {threshold:.12});
   Array.prototype.forEach.call(els, function(el){ io.observe(el); });
 })();
+
+/* ───────────────────────── CÔNG TẮC DARK MODE ───────────────────────── */
+(function(){
+  var toggleBtn = document.getElementById('themeToggle');
+  var currentTheme = localStorage.getItem('sherry-theme');
+
+  // Kiểm tra nếu khách đã từng chọn Dark mode trước đó
+  if(currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    if(toggleBtn) toggleBtn.textContent = '☀️'; // Đổi icon mặt trời
+  }
+
+  if(toggleBtn) {
+    toggleBtn.addEventListener('click', function() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      
+      if(isDark) {
+        // Chuyển về Sáng
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('sherry-theme', 'light');
+        toggleBtn.textContent = '🌙'; // Đổi icon mặt trăng
+        toggleBtn.title = "Bật chế độ Trăng Máu";
+      } else {
+        // Chuyển sang Tối
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('sherry-theme', 'dark');
+        toggleBtn.textContent = '☀️';
+        toggleBtn.title = "Về lại Vườn Ban Mai";
+      }
+    });
+  }
+})();  
 </script>
 </body>
 </html>
