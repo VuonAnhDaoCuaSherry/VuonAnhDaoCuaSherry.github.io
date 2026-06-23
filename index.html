@@ -1130,38 +1130,40 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
   }, {threshold:.12});
   Array.prototype.forEach.call(els, function(el){ io.observe(el); });
 })();
-
 /* ───────────────────────── CÔNG TẮC DARK MODE ───────────────────────── */
 (function(){
-  var toggleBtn = document.getElementById('themeToggle');
+  var btns = document.querySelectorAll('.theme-toggle');
   var currentTheme = localStorage.getItem('sherry-theme');
 
-  // Kiểm tra nếu khách đã từng chọn Dark mode trước đó
-  if(currentTheme === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    if(toggleBtn) toggleBtn.textContent = '☀️'; // Đổi icon mặt trời
-  }
-
-  if(toggleBtn) {
-    toggleBtn.addEventListener('click', function() {
-      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      
-      if(isDark) {
-        // Chuyển về Sáng
-        document.documentElement.removeAttribute('data-theme');
-        localStorage.setItem('sherry-theme', 'light');
-        toggleBtn.textContent = '🌙'; // Đổi icon mặt trăng
-        toggleBtn.title = "Bật chế độ Trăng Máu";
-      } else {
-        // Chuyển sang Tối
-        document.documentElement.setAttribute('data-theme', 'dark');
-        localStorage.setItem('sherry-theme', 'dark');
-        toggleBtn.textContent = '☀️';
-        toggleBtn.title = "Về lại Vườn Ban Mai";
-      }
+  function updateButtons(isDark) {
+    btns.forEach(function(btn) {
+      btn.textContent = isDark ? '☀️' : '🌙';
+      btn.title = isDark ? 'Về lại Vườn Ban Mai' : 'Bật chế độ Trăng Máu';
     });
   }
-})();  
+
+  // Kiểm tra lúc mới vào web
+  if(currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    updateButtons(true);
+  }
+
+  // Chức năng khi bấm nút
+  btns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if(isDark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('sherry-theme', 'light');
+        updateButtons(false);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('sherry-theme', 'dark');
+        updateButtons(true);
+      }
+    });
+  });
+})();
 </script>
 </body>
 </html>
