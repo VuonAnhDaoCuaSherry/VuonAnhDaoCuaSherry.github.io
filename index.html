@@ -292,7 +292,62 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .visit:hover{gap:11px;color:#a23260}
 .lore-links{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .lore-links .visit{padding:8px 16px;border:1px solid var(--line);border-radius:999px;background:#fff}
-.lore-links .visit:hover{border-color:var(--rose);background:#ffe9f1}  
+.lore-links .visit:hover{border-color:var(--rose);background:#ffe9f1}
+
+/* đếm lượt ghé từng bot + meta bên trái footer lore */
+.lore-meta{display:flex;flex-direction:column;gap:2px}
+.lore-clicks{font-size:.74rem;color:var(--rose-deep)}
+
+/* nút đọc full plot trên Facebook */
+.lore-fb{padding:0 26px}
+.lore-fb a{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px;border-radius:14px;text-decoration:none;
+  background:#eef3ff;border:1px solid #d6e0fb;color:#3a5bbf;
+  font-size:.88rem;font-weight:500;
+  transition:background .2s ease, border-color .2s ease;
+}
+.lore-fb a:hover{background:#e3ebff;border-color:#b9c9f7}
+
+/* đếm khách cuối trang */
+.visit-count{margin-top:14px;font-size:.82rem;color:var(--muted)}
+.visit-count b{color:var(--rose-deep);font-weight:600}
+
+/* nút mở bảng xếp hạng */
+.bxh-open-wrap{text-align:center;margin:-14px 0 36px}
+.bxh-open{
+  font-family:inherit;font-size:.86rem;font-weight:600;cursor:pointer;
+  padding:10px 22px;border-radius:999px;
+  background:#fff;border:1px solid var(--rose);color:var(--rose-deep);
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.bxh-open:hover{transform:translateY(-2px);background:#ffe9f1;box-shadow:0 8px 20px rgba(224,100,147,.25)}
+
+/* khung bảng xếp hạng */
+.bxh-box{max-width:480px}
+.bxh-head{padding:26px 26px 6px;text-align:center}
+.bxh-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-bottom:14px}
+.bxh-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.bxh-tab{
+  font-family:inherit;font-size:.82rem;font-weight:500;cursor:pointer;
+  padding:8px 16px;border-radius:999px;
+  background:#fff;border:1px solid var(--line);color:var(--rose-deep);
+  transition:background .2s ease, border-color .2s ease;
+}
+.bxh-tab.on{background:linear-gradient(120deg,#ef87ab,#df5e90);border-color:transparent;color:#fff}
+.bxh-note{margin-top:12px;font-size:.78rem;color:var(--muted);min-height:1px}
+.bxh-body{padding:6px 22px 24px;overflow-y:auto}
+.rank-row{
+  display:flex;align-items:center;gap:13px;
+  padding:11px 13px;border-radius:14px;margin-bottom:8px;
+  background:#fff7fa;border:1px solid #f6dbe7;
+}
+.rank-row.top1{background:linear-gradient(120deg,#fff3d6,#ffe6ef);border-color:#f3c98a}
+.rank-no{flex:0 0 30px;text-align:center;font-family:'Cormorant Garamond',serif;font-weight:700;font-size:1.25rem;color:var(--rose-deep)}
+.rank-row .seal{width:40px;height:40px;flex:0 0 auto}
+.rank-name{flex:1;font-weight:500;color:var(--head);font-size:.96rem;line-height:1.3}
+.rank-score{font-weight:600;color:var(--rose-deep);font-size:.95rem;white-space:nowrap}
+.bxh-loading{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 0}
 
 /* ───────────────────────── giới thiệu & footer ───────────────────────── */
 .about-text{max-width:620px;margin:0 auto;text-align:center;font-size:1.02rem}
@@ -426,12 +481,17 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
     <!-- [ĐẾM BOT] dòng đếm tự động, không cần sửa tay -->
     <p class="bot-count reveal" id="botCount"></p>
 
+    <!-- [BXH] nút mở bảng xếp hạng -->
+    <div class="bxh-open-wrap reveal">
+      <button class="bxh-open" type="button" id="bxhOpen">🏆 Bảng xếp hạng chồng quốc dân</button>
+    </div>
+
     <div class="grid" id="grid">
 
       <!-- [BOT] ─── Bot 0: Bronislav Valeryevich Tikhomirov ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="bronislav" data-platform="✦ Google AI Studio" data-link="https://docs.google.com/document/d/1_z1ohLV7y0kOz7B1RyjYyTgIoiVaxvCnmeHV_o8abyo/edit?usp=sharing">
+      <article class="card reveal" data-bot="bronislav" data-fb="" data-platform="✦ Google AI Studio" data-link="https://docs.google.com/document/d/1_z1ohLV7y0kOz7B1RyjYyTgIoiVaxvCnmeHV_o8abyo/edit?usp=sharing">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -466,7 +526,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
       <!-- [BOT] ─── Bot 1: Dương Hữu Khiêm ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="khiem" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
+      <article class="card reveal" data-bot="khiem" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -499,7 +559,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 2: Cổ Hiểu Thần ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="hieuthan" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1u222ZhpGq3WRZ8yiScNtU6XHhVoSLEQ0">
+      <article class="card reveal" data-bot="hieuthan" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1u222ZhpGq3WRZ8yiScNtU6XHhVoSLEQ0">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -533,7 +593,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 3: Cận Đình Sâm ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dinhsam" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1okGFeSxMqlfYZDUM9YwLGbCgDZl6m7ec">
+      <article class="card reveal" data-bot="dinhsam" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1okGFeSxMqlfYZDUM9YwLGbCgDZl6m7ec">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -570,7 +630,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 4: Khải Eden ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="khaieden" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1fsKz_HNN6I7CqtR5vkgkGANcMws_HNeT">
+      <article class="card reveal" data-bot="khaieden" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1fsKz_HNN6I7CqtR5vkgkGANcMws_HNeT">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -605,7 +665,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 5: Dạ Đông Phong ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dadongphong" data-platform="✦ Google AI Studio"
+      <article class="card reveal" data-bot="dadongphong" data-fb="" data-platform="✦ Google AI Studio"
         data-link="https://aistudio.google.com/app/prompts/1EK30zi6i9ARzrTAfKP5HslLfwMkM0fOf" data-link-label="Bản BG"
         data-link2="https://aistudio.google.com/app/prompts/1JAgVKJ3XC-bUNv9yh5hURJuKdJL7psby" data-link2-label="Bản BL">
         <div class="card-top">
@@ -644,7 +704,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 6: Dominic Sterling ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dominicsterling" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1C-pvfryQkceGJ2KwEyfXj_orEZ0BgrGl">
+      <article class="card reveal" data-bot="dominicsterling" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1C-pvfryQkceGJ2KwEyfXj_orEZ0BgrGl">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -681,7 +741,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 7: Đỗ Đình Thế Nguyên ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="thenguyen" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/16kegd7ei-hK_hC4xuRqKsRik2VXvjVMI">
+      <article class="card reveal" data-bot="thenguyen" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/16kegd7ei-hK_hC4xuRqKsRik2VXvjVMI">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -712,7 +772,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
       <!-- [BOT] ─── Bot 8: Silas Sterling ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="silassterling" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1bUJeNiWW8J-EcHpaYSFFhKPGDh7ZM3Bq">
+      <article class="card reveal" data-bot="silassterling" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1bUJeNiWW8J-EcHpaYSFFhKPGDh7ZM3Bq">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -750,7 +810,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
             <!-- [BOT] ─── Bot 9: Trần Khắc Hữu ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="trankhachuu" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1uBNO5aRHo7IIdrIA29d_ThbXMsDKsJYV">
+      <article class="card reveal" data-bot="trankhachuu" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1uBNO5aRHo7IIdrIA29d_ThbXMsDKsJYV">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -786,7 +846,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
             <!-- [BOT] ─── Bot 10: Hoắc Kính Hàn ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="hoackinhhan" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1WjUIZ0hD-LSsxJrhLagv9nO_gBkeDXET">
+      <article class="card reveal" data-bot="hoackinhhan" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1WjUIZ0hD-LSsxJrhLagv9nO_gBkeDXET">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -825,7 +885,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 
             <!-- [BOT] ─── Bot 10: Khương Dã Vọng ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="khuongdavong" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1AsbCEwrQQgQrxjowBIHPgIzgaDvO8E_o">
+      <article class="card reveal" data-bot="khuongdavong" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1AsbCEwrQQgQrxjowBIHPgIzgaDvO8E_o">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -886,6 +946,8 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
       <!-- [LINK FACEBOOK] dán link Facebook vào href bên dưới -->
       <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Theo dõi trên Facebook</a>
       <p class="foot-note">Mọi nhân vật trong vườn đều là hư cấu · Nội dung dành cho người dùng 18+</p>
+      <!-- [ĐẾM KHÁCH] dòng đếm tự động, không cần sửa tay -->
+      <p class="visit-count" id="visitCount"></p>
       <p class="foot-copy">© 2026 Vườn Anh Đào của Sherry</p>
     </div>
   </footer>
@@ -896,10 +958,31 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
       <button class="lore-close" type="button" aria-label="Đóng">✕</button>
       <div class="lore-head" id="loreHead"></div>
       <div class="lore-body" id="loreBody"></div>
+      <!-- [FB PLOT] nút đọc full plot trên Facebook, chỉ hiện khi bot có data-fb -->
+      <div class="lore-fb" id="loreFb"></div>
       <div class="lore-foot">
-        <span class="platform" id="lorePlat"></span>
+        <div class="lore-meta">
+          <span class="platform" id="lorePlat"></span>
+          <span class="lore-clicks" id="loreClicks"></span>
+        </div>
         <div class="lore-links" id="loreLinks"></div>
       </div>
+    </div>
+  </div>
+
+  <!-- khung BẢNG XẾP HẠNG dùng chung, nội dung đổ vào bằng JS -->
+  <div class="lore-overlay is-hidden" id="bxhOverlay">
+    <div class="lore-box bxh-box" role="dialog" aria-modal="true" aria-label="Bảng xếp hạng">
+      <button class="lore-close" type="button" aria-label="Đóng">✕</button>
+      <div class="bxh-head">
+        <h3>🏆 Bảng xếp hạng chồng</h3>
+        <div class="bxh-tabs">
+          <button class="bxh-tab on" type="button" data-tab="tym">💗 Top được tym</button>
+          <button class="bxh-tab" type="button" data-tab="click">🍽️ Top mukbang</button>
+        </div>
+        <p class="bxh-note" id="bxhNote"></p>
+      </div>
+      <div class="bxh-body" id="bxhBody"></div>
     </div>
   </div>
 
@@ -987,6 +1070,10 @@ document.documentElement.classList.add('js');
   var bodyEl  = document.getElementById('loreBody');
   var platEl  = document.getElementById('lorePlat');
   var linksEl = document.getElementById('loreLinks');
+  var fbEl    = document.getElementById('loreFb');
+  var clicksEl= document.getElementById('loreClicks');
+  var C_NS  = 'VuonAnhDaoCuaSherry.github.io';
+  var C_API = 'https://abacus.jasoncameron.dev';
 
   function openLore(card){
     var seal = card.querySelector('.seal');
@@ -1000,20 +1087,49 @@ document.documentElement.classList.add('js');
     var lore = card.querySelector('.lore');
     bodyEl.innerHTML = lore ? lore.innerHTML : '<p>Lore đang được viết...</p>';
     platEl.textContent = card.getAttribute('data-platform') || '';
+
+    var botKey = card.getAttribute('data-bot') || '';
+
+    /* nút đọc full plot trên Facebook (chỉ hiện khi bot có data-fb) */
+    var fb = (card.getAttribute('data-fb') || '').trim();
+    fbEl.innerHTML = '';
+    if(fb){
+      var fa = document.createElement('a');
+      fa.href = fb; fa.target = '_blank'; fa.rel = 'noopener';
+      fa.innerHTML = '📖 Đọc full plot trên Facebook';
+      fbEl.appendChild(fa);
+    }
+
+    /* đếm lượt ghé thăm chàng này */
+    clicksEl.textContent = '';
+    if(botKey){
+      fetch(C_API + '/get/' + C_NS + '/click-' + botKey)
+        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+        .then(function(d){ clicksEl.textContent = '🍽️ ' + d.value + ' người đã ghé thăm chàng'; })
+        .catch(function(){ clicksEl.textContent = ''; });
+    }
+
     linksEl.innerHTML = '';
-[
-  [card.getAttribute('data-link'),  card.getAttribute('data-link-label')  || 'Gặp chồng liền'],
-  [card.getAttribute('data-link2'), card.getAttribute('data-link2-label') || 'Bản 2']
-].forEach(function(d){
-  if(!d[0]) return;
-  var a = document.createElement('a');
-  a.className = 'visit';
-  a.href = d[0];
-  a.target = '_blank';
-  a.rel = 'noopener';
-  a.innerHTML = d[1] + ' <span>→</span>';
-  linksEl.appendChild(a);
-});
+    [
+      [card.getAttribute('data-link'),  card.getAttribute('data-link-label')  || 'Gặp chồng liền'],
+      [card.getAttribute('data-link2'), card.getAttribute('data-link2-label') || 'Bản 2']
+    ].forEach(function(d){
+      if(!d[0]) return;
+      var a = document.createElement('a');
+      a.className = 'visit';
+      a.href = d[0];
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.innerHTML = d[1] + ' <span>→</span>';
+      a.addEventListener('click', function(){
+        if(!botKey) return;
+        fetch(C_API + '/hit/' + C_NS + '/click-' + botKey)
+          .then(function(r){ return r.json(); })
+          .then(function(d){ clicksEl.textContent = '🍽️ ' + d.value + ' người đã ghé thăm chàng'; })
+          .catch(function(){});
+      });
+      linksEl.appendChild(a);
+    });
     overlay.classList.remove('is-hidden');
     document.body.style.overflow = 'hidden';
   }
@@ -1112,6 +1228,114 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
         });
       }
       c.classList.toggle('is-hide', !show);
+    });
+  });
+})();
+
+/* [ĐẾM KHÁCH] tổng lượt ghé vườn, mỗi phiên trình duyệt chỉ cộng 1 lần */
+(function(){
+  var o = document.getElementById('visitCount');
+  if(!o) return;
+  var NS = 'VuonAnhDaoCuaSherry.github.io';
+  var API = 'https://abacus.jasoncameron.dev';
+  var da = false;
+  try { da = !!sessionStorage.getItem('sherry-visited'); } catch(e){}
+  var url = da ? (API + '/get/' + NS + '/visits') : (API + '/hit/' + NS + '/visits');
+  fetch(url)
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      o.innerHTML = 'Đã có <b>' + d.value + '</b> lượt ghé vườn 🍒';
+      try { sessionStorage.setItem('sherry-visited', '1'); } catch(e){}
+    })
+    .catch(function(){ o.textContent = ''; });
+})();
+
+/* [BXH] bảng xếp hạng: Top được tym + Top mukbang (lượt bấm link riêng) */
+(function(){
+  var openBtn = document.getElementById('bxhOpen');
+  var overlay = document.getElementById('bxhOverlay');
+  var bodyEl  = document.getElementById('bxhBody');
+  var noteEl  = document.getElementById('bxhNote');
+  if(!openBtn || !overlay) return;
+  var NS = 'VuonAnhDaoCuaSherry.github.io';
+  var API = 'https://abacus.jasoncameron.dev';
+  var curTab = 'tym';
+  var data = null;
+
+  var bots = [];
+  Array.prototype.forEach.call(document.querySelectorAll('#grid .card:not(.soon)'), function(card){
+    var key = card.getAttribute('data-bot');
+    if(!key) return;
+    var nameEl = card.querySelector('h3');
+    var sealEl = card.querySelector('.seal');
+    bots.push({ key:key, name:nameEl?nameEl.textContent:key, seal:sealEl?sealEl.outerHTML:'' });
+  });
+
+  function fetchVal(path){
+    return fetch(API + '/get/' + NS + '/' + path)
+      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+      .then(function(d){ return d.value || 0; })
+      .catch(function(){ return 0; });
+  }
+
+  function load(){
+    bodyEl.innerHTML = '<p class="bxh-loading">Đang đếm phiếu... 🍒</p>';
+    var jobs = [];
+    bots.forEach(function(b){
+      jobs.push(fetchVal(b.key).then(function(v){ b.tym = v; }));
+      jobs.push(fetchVal('click-' + b.key).then(function(v){ b.click = v; }));
+    });
+    Promise.all(jobs).then(function(){
+      data = {
+        tym:   bots.slice().sort(function(a,b){ return (b.tym||0)-(a.tym||0); }),
+        click: bots.slice().sort(function(a,b){ return (b.click||0)-(a.click||0); })
+      };
+      render();
+    });
+  }
+
+  function render(){
+    if(!data) return;
+    var list = data[curTab];
+    var isClick = curTab === 'click';
+    noteEl.textContent = isClick
+      ? 'Xếp theo số lượt bấm vào link của từng chàng.'
+      : 'Xếp theo số tym mọi người thả cho từng chàng.';
+    var medal = ['👑','🥈','🥉'];
+    bodyEl.innerHTML = list.map(function(b, i){
+      var score = isClick ? (b.click||0) : (b.tym||0);
+      var unit  = isClick ? ' lượt' : ' 💗';
+      var no = i < 3 ? medal[i] : (i+1);
+      return '<div class="rank-row' + (i===0?' top1':'') + '">' +
+               '<div class="rank-no">' + no + '</div>' +
+               b.seal +
+               '<div class="rank-name">' + b.name + '</div>' +
+               '<div class="rank-score">' + score + unit + '</div>' +
+             '</div>';
+    }).join('');
+  }
+
+  openBtn.addEventListener('click', function(){
+    overlay.classList.remove('is-hidden');
+    document.body.style.overflow = 'hidden';
+    load();
+  });
+  function close(){
+    overlay.classList.add('is-hidden');
+    document.body.style.overflow = '';
+  }
+  overlay.addEventListener('click', function(e){
+    if(e.target === overlay || e.target.closest('.lore-close')) close();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !overlay.classList.contains('is-hidden')) close();
+  });
+  Array.prototype.forEach.call(overlay.querySelectorAll('.bxh-tab'), function(tab){
+    tab.addEventListener('click', function(){
+      Array.prototype.forEach.call(overlay.querySelectorAll('.bxh-tab'), function(x){ x.classList.remove('on'); });
+      tab.classList.add('on');
+      curTab = tab.getAttribute('data-tab');
+      render();
     });
   });
 })();
