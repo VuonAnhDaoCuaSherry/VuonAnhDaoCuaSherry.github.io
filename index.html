@@ -349,58 +349,22 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .rank-score{font-weight:600;color:var(--rose-deep);font-size:.95rem;white-space:nowrap}
 .bxh-loading{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 0}
 
-/* ═════════════════ DARK MODE (vườn về đêm) ═════════════════ */
-html[data-theme="dark"]{
-  --bg:#160d1c;
-  --card:#271830;
-  --line:rgba(240,168,189,.18);
-  --rose:#f0a0bd;
-  --rose-deep:#f4b8cd;
-  --head:#f4e6ed;
-  --ink:#d9c8d4;
-  --muted:#ab8ea2;
-}
-html[data-theme="dark"] body{
-  background-color:#160d1c;
-  background-image:
-    radial-gradient(rgba(240,160,189,.07) 1.2px, transparent 1.3px),
-    radial-gradient(900px 540px at 50% -8%, rgba(120,60,110,.35), transparent 62%),
-    radial-gradient(820px 620px at -8% 30%, rgba(90,50,130,.30), transparent 56%),
-    radial-gradient(760px 580px at 108% 82%, rgba(150,60,110,.26), transparent 58%);
-  background-size:26px 26px, auto, auto, auto;
-}
-html[data-theme="dark"] .btn{background:var(--card)}
-html[data-theme="dark"] .tag{background:rgba(255,255,255,.05);border-color:var(--line);color:var(--rose-deep)}
-html[data-theme="dark"] .tag.adult{background:rgba(244,140,160,.16);border-color:rgba(247,177,200,.35);color:#ff9eb4}
-html[data-theme="dark"] .chip{background:var(--card)}
-html[data-theme="dark"] .fav{background:var(--card)}
-html[data-theme="dark"] .fav.on{background:rgba(244,140,160,.18);border-color:rgba(247,177,200,.35);color:#ff9eb4}
-html[data-theme="dark"] .topbar{background:rgba(22,13,28,.85)}
-html[data-theme="dark"] .card.soon{background:rgba(255,255,255,.04)}
-html[data-theme="dark"] .lore-links .visit{background:var(--card)}
-html[data-theme="dark"] .lore-links .visit:hover{background:rgba(240,160,189,.14)}
-html[data-theme="dark"] .lore-fb a{background:rgba(120,150,255,.13);border-color:rgba(150,170,240,.32);color:#b3c4ff}
-html[data-theme="dark"] .lore-fb a:hover{background:rgba(120,150,255,.2)}
-html[data-theme="dark"] .lore-overlay{background:rgba(8,4,12,.6)}
-html[data-theme="dark"] .bxh-open{background:var(--card)}
-html[data-theme="dark"] .bxh-open:hover{background:rgba(240,160,189,.15)}
-html[data-theme="dark"] .rank-row{background:rgba(255,255,255,.04);border-color:var(--line)}
-html[data-theme="dark"] .rank-row.top1{background:linear-gradient(120deg,rgba(243,201,138,.18),rgba(240,160,189,.16));border-color:rgba(243,201,138,.4)}
-html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
+/* dark mode (Trăng Máu) — chỉnh thêm cho mấy thành phần mới khớp tông */
+[data-theme="dark"] .lore-fb a{background:rgba(230,28,77,.14);border-color:rgba(230,28,77,.4);color:#ff9bb4}
+[data-theme="dark"] .lore-fb a:hover{background:rgba(230,28,77,.22)}
+[data-theme="dark"] .rank-row{background:rgba(255,255,255,.04);border-color:var(--line)}
+[data-theme="dark"] .rank-row.top1{background:linear-gradient(120deg,rgba(230,28,77,.2),rgba(120,10,40,.18));border-color:rgba(230,28,77,.45)}
+[data-theme="dark"] .bxh-open{background:transparent}
 
-/* nút bật/tắt dark mode, thả nổi góc dưới bên trái */
-.theme-toggle{
+/* biến nút theme thành nút thả nổi góc dưới trái (chỉ cái có class .float) */
+.theme-toggle.float{
   position:fixed;left:18px;bottom:18px;z-index:30;
-  width:50px;height:50px;border-radius:50%;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;line-height:1;
-  background:var(--card);border:1px solid var(--line);
+  width:46px;height:46px;
+  background:var(--card);
   box-shadow:0 8px 22px rgba(120,40,80,.22);
-  transition:transform .25s ease, box-shadow .25s ease;
 }
-.theme-toggle:hover{transform:translateY(-3px) scale(1.05);box-shadow:0 12px 28px rgba(120,40,80,.32)}
-@media (max-width:600px){ .theme-toggle{left:14px;bottom:14px;width:46px;height:46px;font-size:1.2rem} }
-@media (prefers-reduced-motion: reduce){ .theme-toggle{transition:none} }
+[data-theme="dark"] .theme-toggle.float{background:#241016;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+@media (max-width:600px){ .theme-toggle.float{left:14px;bottom:14px} }
 
 /* ───────────────────────── giới thiệu & footer ───────────────────────── */
 .about-text{max-width:620px;margin:0 auto;text-align:center;font-size:1.02rem}
@@ -484,8 +448,6 @@ html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
 <!-- lớp mưa cherry (tự sinh bằng JS ở cuối trang) -->
 <div class="drops" id="drops" aria-hidden="true"></div>
 
-<!-- nút bật/tắt dark mode, thả nổi góc dưới bên trái -->
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="Bật/tắt chế độ tối" title="Bật/tắt vườn về đêm">🌙</button>
 
 <!-- ═════════════════════ MÀN 1: CỔNG VƯỜN ═════════════════════ -->
 <header class="gate" id="gate">
@@ -518,7 +480,7 @@ html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
   <nav class="topbar">
     <div class="topbar-in">
       <a class="brand" href="#">🍒 Vườn Anh Đào của Sherry</a>
-      <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
+      <button class="theme-toggle float" type="button" title="Bật chế độ Trăng Máu">🌙</button>
       <a class="back" href="#">← Về cổng vườn</a>
     </div>
   </nav>
@@ -548,7 +510,7 @@ html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
       <!-- [BOT] ─── Bot 0: Bronislav Valeryevich Tikhomirov ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="bronislav" data-fb="https://www.facebook.com/share/p/17YzsZN3wa/" data-platform="✦ Google AI Studio" data-link="https://docs.google.com/document/d/1_z1ohLV7y0kOz7B1RyjYyTgIoiVaxvCnmeHV_o8abyo/edit?usp=sharing">
+      <article class="card reveal" data-bot="bronislav" data-fb="" data-platform="✦ Google AI Studio" data-link="https://docs.google.com/document/d/1_z1ohLV7y0kOz7B1RyjYyTgIoiVaxvCnmeHV_o8abyo/edit?usp=sharing">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -583,7 +545,7 @@ html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
       <!-- [BOT] ─── Bot 1: Dương Hữu Khiêm ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="khiem" data-fb="https://www.facebook.com/share/p/1Xp3MpTuNB/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
+      <article class="card reveal" data-bot="khiem" data-fb="" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1047,22 +1009,6 @@ html[data-theme="dark"] .hero-art img{border-color:#2e1d38}
 
 <script>
 document.documentElement.classList.add('js');
-
-/* [DARK MODE] nút bật/tắt vườn về đêm, nhớ lựa chọn cho lần sau */
-(function(){
-  var btn = document.getElementById('themeToggle');
-  if(!btn) return;
-  function laToi(){ return document.documentElement.getAttribute('data-theme') === 'dark'; }
-  function veIcon(){ btn.textContent = laToi() ? '☀️' : '🌙'; }
-  veIcon();
-  btn.addEventListener('click', function(){
-    var toi = !laToi();
-    if(toi) document.documentElement.setAttribute('data-theme', 'dark');
-    else document.documentElement.removeAttribute('data-theme');
-    try { localStorage.setItem('sherry-theme', toi ? 'dark' : 'light'); } catch(e){}
-    veIcon();
-  });
-})();
 
 /* chuyển giữa cổng vườn và trang trong theo hash (#garden) */
 (function(){
