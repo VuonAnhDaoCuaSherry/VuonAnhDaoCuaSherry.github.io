@@ -303,11 +303,11 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .lore-fb a{
   display:flex;align-items:center;justify-content:center;gap:8px;
   padding:11px;border-radius:14px;text-decoration:none;
-  background:#eef3ff;border:1px solid #d6e0fb;color:#3a5bbf;
+  background:#fff0f6;border:1px solid #f3c3d6;color:var(--rose-deep);
   font-size:.88rem;font-weight:500;
   transition:background .2s ease, border-color .2s ease;
 }
-.lore-fb a:hover{background:#e3ebff;border-color:#b9c9f7}
+.lore-fb a:hover{background:#ffe3ef;border-color:var(--rose)}
 
 /* đếm khách cuối trang */
 .visit-count{margin-top:14px;font-size:.82rem;color:var(--muted)}
@@ -350,10 +350,10 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .bxh-loading{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 0}
 
 /* dark mode (Trăng Máu) — chỉnh thêm cho mấy thành phần mới khớp tông */
-[data-theme="dark"] .lore-fb a{background:rgba(230,28,77,.14);border-color:rgba(230,28,77,.4);color:#ff9bb4}
-[data-theme="dark"] .lore-fb a:hover{background:rgba(230,28,77,.22)}
+[data-theme="dark"] .lore-fb a{background:rgba(240,160,189,.14);border-color:rgba(240,168,189,.32);color:#ffc6da}
+[data-theme="dark"] .lore-fb a:hover{background:rgba(240,160,189,.22)}
 [data-theme="dark"] .rank-row{background:rgba(255,255,255,.04);border-color:var(--line)}
-[data-theme="dark"] .rank-row.top1{background:linear-gradient(120deg,rgba(230,28,77,.2),rgba(120,10,40,.18));border-color:rgba(230,28,77,.45)}
+[data-theme="dark"] .rank-row.top1{background:linear-gradient(120deg,rgba(243,201,138,.18),rgba(240,160,189,.16));border-color:rgba(243,201,138,.4)}
 [data-theme="dark"] .bxh-open{background:transparent}
 
 /* biến nút theme thành nút thả nổi góc dưới trái (chỉ cái có class .float) */
@@ -363,7 +363,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   background:var(--card);
   box-shadow:0 8px 22px rgba(120,40,80,.22);
 }
-[data-theme="dark"] .theme-toggle.float{background:#241016;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+[data-theme="dark"] .theme-toggle.float{background:#271830;box-shadow:0 8px 22px rgba(0,0,0,.4)}
 @media (max-width:600px){ .theme-toggle.float{left:14px;bottom:14px} }
 
 /* ───────────────────────── giới thiệu & footer ───────────────────────── */
@@ -386,31 +386,41 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   .card,.btn,.visit,.chip,.fav{transition:none}
   .lore-overlay,.lore-box{animation:none}
 }
-/* ───────────────────────── DARK MODE (MÀU ĐỎ CHERRY + XÁM LẠNH) ───────────────────────── */
+/* ───────────────────────── DARK MODE (VƯỜN ĐÊM TÍM MẬN) ───────────────────────── */
 [data-theme="dark"] {
-  --bg: #101014;
-  --card: #18181d;
-  --line: #3b1b26;
-  --rose: #e61c4d;
-  --rose-deep: #b31238;
-  --head: #ffccd8;
-  --ink: #c4abb4;
-  --muted: #856b76;
-  --green: #6d8a57;
+  --bg: #160d1c;
+  --card: #271830;
+  --line: rgba(240,168,189,.18);
+  --rose: #f0a0bd;
+  --rose-deep: #f4b8cd;
+  --head: #f4e6ed;
+  --ink: #d9c8d4;
+  --muted: #ab8ea2;
+  --green: #a8c98b;
 }
 [data-theme="dark"] body {
+  background-color: #160d1c;
   background-image:
-    radial-gradient(rgba(230, 28, 77, 0.15) 1.2px, transparent 1.3px),
-    radial-gradient(900px 540px at 50% -8%, #161214, transparent 62%),
-    radial-gradient(820px 620px at -8% 30%, rgba(230, 28, 77, 0.08), transparent 56%),
-    radial-gradient(760px 580px at 108% 82%, rgba(230, 28, 77, 0.08), transparent 58%);
+    radial-gradient(rgba(240,160,189,.07) 1.2px, transparent 1.3px),
+    radial-gradient(900px 540px at 50% -8%, rgba(120,60,110,.35), transparent 62%),
+    radial-gradient(820px 620px at -8% 30%, rgba(90,50,130,.30), transparent 56%),
+    radial-gradient(760px 580px at 108% 82%, rgba(150,60,110,.26), transparent 58%);
 }
 [data-theme="dark"] .drop {
-  background: radial-gradient(circle at 30% 30%, #a01136, #4a0314 76%);
-  opacity: 0.7 !important; 
+  background: radial-gradient(circle at 30% 30%, #ffd6e2, #ec85a9 76%);
 }
-[data-theme="dark"] .topbar { background: rgba(16, 16, 20, 0.88); }
-[data-theme="dark"] .lore-overlay { background: rgba(10, 10, 12, 0.75); }
+[data-theme="dark"] .topbar { background: rgba(22,13,28,.85); }
+[data-theme="dark"] .lore-overlay { background: rgba(8,4,12,.6); }
+[data-theme="dark"] .btn { background: var(--card); }
+[data-theme="dark"] .tag { background: rgba(255,255,255,.05); border-color: var(--line); color: var(--rose-deep); }
+[data-theme="dark"] .tag.adult { background: rgba(244,140,160,.16); border-color: rgba(247,177,200,.35); color: #ff9eb4; }
+[data-theme="dark"] .chip { background: var(--card); }
+[data-theme="dark"] .fav { background: var(--card); }
+[data-theme="dark"] .fav.on { background: rgba(244,140,160,.18); border-color: rgba(247,177,200,.35); color: #ff9eb4; }
+[data-theme="dark"] .card.soon { background: rgba(255,255,255,.04); }
+[data-theme="dark"] .lore-links .visit { background: var(--card); }
+[data-theme="dark"] .lore-links .visit:hover { background: rgba(240,160,189,.14); }
+[data-theme="dark"] .hero-art img { border-color: #2e1d38; }
 
 /* Nút Công tắc Sáng/Tối */
 .theme-toggle {
@@ -480,10 +490,12 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   <nav class="topbar">
     <div class="topbar-in">
       <a class="brand" href="#">🍒 Vườn Anh Đào của Sherry</a>
-      <button class="theme-toggle float" type="button" title="Bật chế độ Trăng Máu">🌙</button>
       <a class="back" href="#">← Về cổng vườn</a>
     </div>
   </nav>
+
+  <!-- nút bật/tắt dark mode, thả nổi góc dưới trái (đặt NGOÀI topbar để ghim đúng theo màn hình) -->
+  <button class="theme-toggle float" type="button" title="Bật chế độ Trăng Máu">🌙</button>
 
   <main>
   <!-- ───────────── DANH SÁCH BOT ───────────── -->
@@ -996,7 +1008,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
       <div class="bxh-head">
         <h3>🏆 Bảng xếp hạng chồng</h3>
         <div class="bxh-tabs">
-          <button class="bxh-tab on" type="button" data-tab="tym">💗 Top được tym</button>
+          <button class="bxh-tab on" type="button" data-tab="tym">💗 Top chồng iu</button>
           <button class="bxh-tab" type="button" data-tab="click">🍽️ Top mukbang</button>
         </div>
         <p class="bxh-note" id="bxhNote"></p>
@@ -1269,7 +1281,7 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
     .catch(function(){ o.textContent = ''; });
 })();
 
-/* [BXH] bảng xếp hạng: Top được tym + Top mukbang (lượt bấm link riêng) */
+/* [BXH] bảng xếp hạng: Top chồng iu + Top mukbang (lượt bấm link riêng) */
 (function(){
   var openBtn = document.getElementById('bxhOpen');
   var overlay = document.getElementById('bxhOverlay');
