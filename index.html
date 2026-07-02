@@ -1161,6 +1161,7 @@ document.documentElement.classList.add('js');
     platEl.textContent = card.getAttribute('data-platform') || '';
 
     var botKey = card.getAttribute('data-bot') || '';
+    var clickKey = card.getAttribute('data-clickkey') || botKey;  /* đổi data-clickkey để reset lượt click của riêng bot này */
 
     /* nút đọc full plot trên Facebook (chỉ hiện khi bot có data-fb) */
     var fb = (card.getAttribute('data-fb') || '').trim();
@@ -1340,8 +1341,7 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
     if(!key) return;
     var nameEl = card.querySelector('h3');
     var sealEl = card.querySelector('.seal');
-    bots.push({ key:key, name:nameEl?nameEl.textContent:key, seal:sealEl?sealEl.outerHTML:'' });
-  });
+    bots.push({ key:key, clickKey:(card.getAttribute('data-clickkey') || key), name:nameEl?nameEl.textContent:key, seal:sealEl?sealEl.outerHTML:'' });  });
 
   function fetchVal(path){
     return fetch(API + '/get/' + NS + '/' + path)
