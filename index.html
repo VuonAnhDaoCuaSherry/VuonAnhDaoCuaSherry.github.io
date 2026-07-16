@@ -349,6 +349,62 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .rank-score{font-weight:600;color:var(--rose-deep);font-size:.95rem;white-space:nowrap}
 .bxh-loading{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 0}
 
+/* nút mở khu review xếp hàng gọn cạnh nút BXH */
+.bxh-open-wrap{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* khung sổ lưu bút / review */
+.review-box{max-width:520px}
+.review-head{padding:26px 26px 4px;text-align:center}
+.review-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-bottom:6px}
+.review-sub{font-size:.86rem;color:var(--muted)}
+.review-form{padding:14px 26px 6px;display:flex;flex-direction:column}
+.review-l{font-size:.8rem;font-weight:500;color:var(--head);margin:12px 0 5px}
+.review-opt{font-weight:400;color:var(--muted)}
+.review-in{
+  width:100%;padding:10px 14px;border-radius:12px;
+  border:1px solid var(--line);background:#fff;color:var(--head);
+  font-family:inherit;font-size:.92rem;
+}
+textarea.review-in{resize:vertical;line-height:1.55}
+.review-in:focus{outline:none;border-color:var(--rose)}
+.review-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.review-send{
+  margin-top:16px;padding:12px;border:none;border-radius:999px;cursor:pointer;
+  background:linear-gradient(120deg,#ef87ab,#df5e90);color:#fff;
+  font-family:inherit;font-size:.92rem;font-weight:600;
+}
+.review-send:hover{box-shadow:0 8px 22px rgba(224,100,147,.4)}
+.review-send:disabled{opacity:.6;cursor:default;box-shadow:none}
+.review-msg{margin-top:9px;font-size:.82rem;text-align:center;min-height:1px}
+.review-msg.ok{color:#3f9d6b}
+.review-msg.err{color:#cd3a6e}
+.review-list-head{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:16px 26px 8px;margin-top:6px;border-top:1px dashed #f1c5d7;
+}
+.review-list-head span{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.1rem;color:var(--head)}
+.review-filter{
+  padding:6px 12px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;color:var(--rose-deep);font-family:inherit;font-size:.8rem;
+}
+.review-list{padding:4px 26px 24px;overflow-y:auto}
+.review-item{
+  background:#fff7fa;border:1px solid #f6dbe7;border-radius:14px;
+  padding:13px 15px;margin-bottom:10px;
+}
+.review-item-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
+.review-to{font-size:.72rem;font-weight:600;color:var(--rose-deep);background:#ffe3ef;padding:3px 10px;border-radius:999px}
+.review-time{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.review-text{font-size:.92rem;color:var(--ink);white-space:pre-wrap;word-break:break-word}
+.review-name{margin-top:6px;font-size:.78rem;color:var(--muted);text-align:right}
+.review-empty{text-align:center;color:var(--muted);font-size:.88rem;padding:20px 0}
+
+[data-theme="dark"] .review-in{background:var(--card)}
+[data-theme="dark"] .review-filter{background:var(--card)}
+[data-theme="dark"] .review-item{background:rgba(255,255,255,.04);border-color:var(--line)}
+[data-theme="dark"] .review-to{background:rgba(239,77,110,.18);color:#ff8aa3}
+[data-theme="dark"] .review-send{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
+
 /* dark mode (đỏ anh đào) — chỉnh thêm cho mấy thành phần mới khớp tông */
 [data-theme="dark"] .lore-fb a{background:rgba(239,77,110,.15);border-color:rgba(239,77,110,.38);color:#ff9eb4}
 [data-theme="dark"] .lore-fb a:hover{background:rgba(239,77,110,.24)}
@@ -519,6 +575,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
     <!-- [BXH] nút mở bảng xếp hạng -->
     <div class="bxh-open-wrap reveal">
       <button class="bxh-open" type="button" id="bxhOpen">🏆 Bảng xếp hạng chồng quốc dân</button>
+      <button class="bxh-open" type="button" id="reviewOpen">💌 Sổ lưu bút &amp; review</button>
     </div>
 
     <div class="grid" id="grid">
@@ -1127,6 +1184,33 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
     </div>
   </div>
 
+  <!-- khung SỔ LƯU BÚT & REVIEW -->
+  <div class="lore-overlay is-hidden" id="reviewOverlay">
+    <div class="lore-box review-box" role="dialog" aria-modal="true" aria-label="Sổ lưu bút và review">
+      <button class="lore-close" type="button" aria-label="Đóng">✕</button>
+      <div class="review-head">
+        <h3>💌 Sổ lưu bút của vườn</h3>
+        <p class="review-sub">Để lại vài dòng cho Sherry, hoặc review một chàng. Để trống ô tên nếu muốn ẩn danh.</p>
+      </div>
+      <div class="review-form">
+        <label class="review-l" for="reviewTo">Gửi cho</label>
+        <select class="review-in" id="reviewTo"></select>
+        <label class="review-l" for="reviewMsg">Lời nhắn</label>
+        <textarea class="review-in" id="reviewMsg" rows="3" maxlength="600" placeholder="Viết gì đó dễ thương (hoặc thành thật) nha..."></textarea>
+        <label class="review-l" for="reviewName">Tên của bạn <span class="review-opt">(để trống = ẩn danh)</span></label>
+        <input class="review-in" id="reviewName" type="text" maxlength="40" placeholder="Ẩn danh">
+        <input class="review-hp" id="reviewHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="review-send" type="button" id="reviewSend">Gửi vào vườn 🍒</button>
+        <p class="review-msg" id="reviewFormMsg"></p>
+      </div>
+      <div class="review-list-head">
+        <span>Mọi người đã viết</span>
+        <select class="review-filter" id="reviewFilter"></select>
+      </div>
+      <div class="review-list" id="reviewList"></div>
+    </div>
+  </div>
+
 </div><!-- /trang trong -->
 
 <script>
@@ -1480,6 +1564,103 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
       render();
     });
   });
+})();
+
+/* [REVIEW] sổ lưu bút + review, lưu trên Google Sheet qua Apps Script */
+(function(){
+  /* ⇩⇩⇩ DÁN LINK WEB APP CỦA BẠN VÀO GIỮA HAI DẤU NHÁY (xem hướng dẫn) ⇩⇩⇩ */
+  var REVIEW_API = "";
+  /* ⇧⇧⇧ ví dụ: "https://script.google.com/macros/s/AKfy..../exec" ⇧⇧⇧ */
+
+  var openBtn = document.getElementById('reviewOpen');
+  var overlay = document.getElementById('reviewOverlay');
+  if(!openBtn || !overlay) return;
+  var toSel   = document.getElementById('reviewTo');
+  var msgEl   = document.getElementById('reviewMsg');
+  var nameEl  = document.getElementById('reviewName');
+  var hpEl    = document.getElementById('reviewHp');
+  var sendBtn = document.getElementById('reviewSend');
+  var formMsg = document.getElementById('reviewFormMsg');
+  var filter  = document.getElementById('reviewFilter');
+  var listEl  = document.getElementById('reviewList');
+  var SHERRY  = '💌 Gửi Sherry (creator)';
+  var cache   = [];
+
+  function esc(t){ var d=document.createElement('div'); d.textContent = (t==null?'':String(t)); return d.innerHTML; }
+
+  /* dựng danh sách "Gửi cho" từ các bot + Sherry */
+  var subjects = [SHERRY];
+  Array.prototype.forEach.call(document.querySelectorAll('#grid .card:not(.soon) h3'), function(h){
+    var n = h.textContent.trim(); if(n) subjects.push(n);
+  });
+  subjects.forEach(function(s){
+    var o = document.createElement('option'); o.value=s; o.textContent=s; toSel.appendChild(o);
+  });
+  var fAll = document.createElement('option'); fAll.value='*'; fAll.textContent='Tất cả'; filter.appendChild(fAll);
+  subjects.forEach(function(s){
+    var o = document.createElement('option'); o.value=s; o.textContent=s; filter.appendChild(o);
+  });
+
+  function render(){
+    if(!REVIEW_API){
+      listEl.innerHTML = '<p class="review-empty">Khu này chưa được cấu hình. (Chủ vườn: dán link Web App vào biến REVIEW_API nha.)</p>';
+      return;
+    }
+    var pick = filter.value;
+    var rows = cache.filter(function(r){ return pick==='*' || r.to===pick; });
+    if(!rows.length){
+      listEl.innerHTML = '<p class="review-empty">Chưa có lời nhắn nào. Bạn viết dòng đầu tiên nha 🍒</p>';
+      return;
+    }
+    listEl.innerHTML = rows.map(function(r){
+      var name = (r.name && String(r.name).trim()) ? esc(String(r.name).trim()) : 'Ẩn danh 🍒';
+      return '<div class="review-item">' +
+        '<div class="review-item-top"><span class="review-to">' + esc(r.to) + '</span>' +
+        '<span class="review-time">' + esc(r.time) + '</span></div>' +
+        '<div class="review-text">' + esc(r.msg) + '</div>' +
+        '<div class="review-name">— ' + name + '</div></div>';
+    }).join('');
+  }
+
+  function load(){
+    if(!REVIEW_API){ render(); return; }
+    listEl.innerHTML = '<p class="review-empty">Đang tải lời nhắn... 🍒</p>';
+    fetch(REVIEW_API)
+      .then(function(r){ return r.json(); })
+      .then(function(d){ cache = Array.isArray(d) ? d : (d.rows || []); render(); })
+      .catch(function(){ listEl.innerHTML = '<p class="review-empty">Không tải được lời nhắn, thử lại sau nha.</p>'; });
+  }
+
+  function send(){
+    if(!REVIEW_API){ formMsg.className='review-msg err'; formMsg.textContent='Khu này chưa được cấu hình.'; return; }
+    if(hpEl.value){ return; }  /* bẫy bot spam */
+    var msg = msgEl.value.trim();
+    if(!msg){ formMsg.className='review-msg err'; formMsg.textContent='Viết vài dòng đã nha 🍒'; return; }
+    sendBtn.disabled = true;
+    formMsg.className='review-msg'; formMsg.textContent='Đang gửi...';
+    var payload = JSON.stringify({ to: toSel.value, name: nameEl.value.trim(), msg: msg });
+    fetch(REVIEW_API, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: payload })
+      .then(function(){
+        msgEl.value=''; nameEl.value='';
+        formMsg.className='review-msg ok'; formMsg.textContent='Đã gửi vào vườn, cảm ơn bạn 🍒';
+        setTimeout(function(){ sendBtn.disabled=false; load(); }, 1300);
+      })
+      .catch(function(){
+        sendBtn.disabled=false;
+        formMsg.className='review-msg err'; formMsg.textContent='Gửi lỗi rồi, thử lại nha.';
+      });
+  }
+
+  openBtn.addEventListener('click', function(){
+    overlay.classList.remove('is-hidden');
+    document.body.style.overflow='hidden';
+    load();
+  });
+  function close(){ overlay.classList.add('is-hidden'); document.body.style.overflow=''; }
+  overlay.addEventListener('click', function(e){ if(e.target===overlay || e.target.closest('.lore-close')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !overlay.classList.contains('is-hidden')) close(); });
+  filter.addEventListener('change', render);
+  sendBtn.addEventListener('click', send);
 })();
 
 /* hiệu ứng hiện dần khi cuộn */
