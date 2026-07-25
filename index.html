@@ -1320,11 +1320,68 @@ document.documentElement.classList.add('js');
   }
 })();
 
+/* [BỘ ĐẾM] Bộ gọi Abacus dùng chung.
+   Abacus chỉ cho 30 lệnh mỗi 10 giây trên một đường mạng. Vườn có nhiều chồng,
+   gọi ào ạt là bị chặn bớt rồi hiện nhầm số 0. Khối này xếp hàng gọi thong thả,
+   lỗi thì tự thử lại, và nhớ số cũ để không bao giờ hiện 0 sai. */
+var SherryDem = (function(){
+  var NS  = 'VuonAnhDaoCuaSherry.github.io';
+  var API = 'https://abacus.jasoncameron.dev';
+  var CUNG_LUC  = 2;     /* nhiều nhất 2 lệnh chạy cùng lúc */
+  var CACH_NHAU = 400;   /* mỗi lệnh cách nhau 400ms, tức khoảng 25 lệnh/10 giây */
+  var LUU = 'sherry-so-dem';
+  var dangChay = 0, hang = [], nhip = null, nho = {};
+
+  try { nho = JSON.parse(sessionStorage.getItem(LUU) || '{}') || {}; } catch(e){ nho = {}; }
+  function ghiNho(){ try { sessionStorage.setItem(LUU, JSON.stringify(nho)); } catch(e){} }
+
+  function bom(){
+    if(nhip) return;
+    nhip = setInterval(function(){
+      if(!hang.length){ clearInterval(nhip); nhip = null; return; }
+      if(dangChay >= CUNG_LUC) return;
+      var viec = hang.shift();
+      dangChay++;
+      viec(function(){ dangChay--; });
+    }, CACH_NHAU);
+  }
+  function xepHang(fn){
+    return new Promise(function(xong){
+      hang.push(function(ketThuc){
+        fn().then(function(v){ xong(v); ketThuc(); }, function(){ xong(null); ketThuc(); });
+      });
+      bom();
+    });
+  }
+  function goi(duong, conThu){
+    return fetch(API + '/' + duong).then(function(r){
+      if(r.status === 404) return { value: 0 };            /* chưa ai bấm, đúng là 0 thật */
+      if(!r.ok) throw new Error('HTTP ' + r.status);       /* quá tải, lỗi mạng: chưa biết */
+      return r.json();
+    }).catch(function(e){
+      if(conThu > 0){
+        return new Promise(function(res){ setTimeout(res, 1200); })
+          .then(function(){ return goi(duong, conThu - 1); });
+      }
+      throw e;
+    });
+  }
+  function chot(khoa, d){
+    if(d && typeof d.value === 'number'){ nho[khoa] = d.value; ghiNho(); return d.value; }
+    return (khoa in nho) ? nho[khoa] : null;
+  }
+  return {
+    soCu: function(khoa){ return (khoa in nho) ? nho[khoa] : null; },
+    lay:  function(khoa){ return xepHang(function(){ return goi('get/' + NS + '/' + khoa, 2); })
+                            .then(function(d){ return chot(khoa, d); }); },
+    cong: function(khoa){ return xepHang(function(){ return goi('hit/' + NS + '/' + khoa, 2); })
+                            .then(function(d){ return d && typeof d.value === 'number' ? chot(khoa, d) : null; }); }
+  };
+})();
+
 /* [TYM] đếm tym chung cho mọi người qua Abacus (dịch vụ đếm miễn phí).
    Mỗi thiết bị chỉ tym được 1 lần cho mỗi bot, trình duyệt sẽ nhớ. */
 (function(){
-  var NS  = 'VuonAnhDaoCuaSherry.github.io';            /* tên miền của vườn, dùng làm "ngăn tủ" riêng */
-  var API = 'https://abacus.jasoncameron.dev';
   Array.prototype.forEach.call(document.querySelectorAll('#grid .card .fav'), function(btn){
     var card = btn.closest('.card');
     var key  = card.getAttribute('data-bot');
@@ -1335,11 +1392,10 @@ document.documentElement.classList.add('js');
     try { daTym = !!localStorage.getItem(mem); } catch(err){}
     if(daTym){ btn.classList.add('on'); btn.title = 'Bạn đã tym chồng này rồi'; }
 
-    /* lấy số tym hiện tại (chưa có ai tym thì coi như 0) */
-    fetch(API + '/get/' + NS + '/' + key)
-      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-      .then(function(d){ num.textContent = d.value; })
-      .catch(function(){ num.textContent = '0'; });
+    /* hiện số cũ đã nhớ trước cho đỡ trống, rồi mới hỏi số mới */
+    var cu = SherryDem.soCu(key);
+    num.textContent = (cu === null) ? '…' : cu;
+    SherryDem.lay(key).then(function(v){ if(v !== null) num.textContent = v; });
 
     btn.addEventListener('click', function(e){
       e.stopPropagation();
@@ -1348,13 +1404,11 @@ document.documentElement.classList.add('js');
       if(voted) return;
       btn.classList.add('on');
       btn.title = 'Bạn đã tym chồng này rồi';
-      fetch(API + '/hit/' + NS + '/' + key)
-        .then(function(r){ return r.json(); })
-        .then(function(d){
-          num.textContent = d.value;
-          try { localStorage.setItem(mem, '1'); } catch(err){}
-        })
-        .catch(function(){ btn.classList.remove('on'); btn.title = 'Mạng lỗi, thử lại nha'; });
+      SherryDem.cong(key).then(function(v){
+        if(v === null){ btn.classList.remove('on'); btn.title = 'Mạng lỗi, thử lại nha'; return; }
+        num.textContent = v;
+        try { localStorage.setItem(mem, '1'); } catch(err){}
+      });
     });
   });
 })();
@@ -1400,10 +1454,9 @@ document.documentElement.classList.add('js');
     /* đếm lượt ghé thăm chồng này */
     clicksEl.textContent = '';
     if(botKey){
-      fetch(C_API + '/get/' + C_NS + '/click-' + clickKey)
-        .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-        .then(function(d){ clicksEl.textContent = '🍽️ ' + d.value + ' người đã ghé thăm chồng'; })
-        .catch(function(){ clicksEl.textContent = ''; });
+      SherryDem.lay('click-' + clickKey).then(function(v){
+        clicksEl.textContent = (v === null) ? '' : ('🍽️ ' + v + ' người đã ghé thăm chồng');
+      });
     }
 
     linksEl.innerHTML = '';
@@ -1420,10 +1473,9 @@ document.documentElement.classList.add('js');
       a.innerHTML = d[1] + ' <span>→</span>';
       a.addEventListener('click', function(){
         if(!botKey) return;
-        fetch(C_API + '/hit/' + C_NS + '/click-' + clickKey)
-          .then(function(r){ return r.json(); })
-          .then(function(d){ clicksEl.textContent = '🍽️ ' + d.value + ' người đã ghé thăm chồng'; })
-          .catch(function(){});
+        SherryDem.cong('click-' + clickKey).then(function(v){
+          if(v !== null) clicksEl.textContent = '🍽️ ' + v + ' người đã ghé thăm chồng';
+        });
       });
       linksEl.appendChild(a);
     });
@@ -1537,14 +1589,11 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
   var API = 'https://abacus.jasoncameron.dev';
   var da = false;
   try { da = !!sessionStorage.getItem('sherry-visited'); } catch(e){}
-  var url = da ? (API + '/get/' + NS + '/visits') : (API + '/hit/' + NS + '/visits');
-  fetch(url)
-    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-    .then(function(d){
-      o.innerHTML = 'Đã có <b>' + d.value + '</b> lượt ghé vườn 🍒';
-      try { sessionStorage.setItem('sherry-visited', '1'); } catch(e){}
-    })
-    .catch(function(){ o.textContent = ''; });
+  (da ? SherryDem.lay('visits') : SherryDem.cong('visits')).then(function(v){
+    if(v === null){ o.textContent = ''; return; }
+    o.innerHTML = 'Đã có <b>' + v + '</b> lượt ghé vườn 🍒';
+    try { sessionStorage.setItem('sherry-visited', '1'); } catch(e){}
+  });
 })();
 
 /* [BXH] bảng xếp hạng: Top chồng iu + Top mukbang (lượt bấm link riêng) */
@@ -1565,30 +1614,38 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
     if(!key) return;
     var nameEl = card.querySelector('h3');
     var sealEl = card.querySelector('.seal');
-    bots.push({ key:key, clickKey:(card.getAttribute('data-clickkey') || key), name:nameEl?nameEl.textContent:key, seal:sealEl?sealEl.outerHTML:'' });
+    bots.push({ key:key, clickKey:(card.getAttribute('data-clickkey') || key), name:nameEl?nameEl.textContent:key, seal:sealEl?sealEl.outerHTML:'', favEl:card.querySelector('.fav-n') });
   });
 
-  function fetchVal(path){
-    return fetch(API + '/get/' + NS + '/' + path)
-      .then(function(r){ if(!r.ok) throw 0; return r.json(); })
-      .then(function(d){ return d.value || 0; })
-      .catch(function(){ return 0; });
+  /* xếp hạng: số nào chưa lấy được thì cho xuống cuối, không coi là 0 */
+  function xep(truong){
+    return bots.slice().sort(function(a,b){
+      var x = (typeof a[truong] === 'number') ? a[truong] : -1;
+      var y = (typeof b[truong] === 'number') ? b[truong] : -1;
+      return y - x;
+    });
+  }
+  function ve(){
+    data = { tym: xep('tym'), click: xep('click') };
+    render();
   }
 
   function load(){
-    bodyEl.innerHTML = '<p class="bxh-loading">Đang đếm phiếu... 🍒</p>';
-    var jobs = [];
+    if(!data) bodyEl.innerHTML = '<p class="bxh-loading">Đang đếm phiếu... 🍒</p>';
     bots.forEach(function(b){
-      jobs.push(fetchVal(b.key).then(function(v){ b.tym = v; }));
-      jobs.push(fetchVal('click-' + b.clickKey).then(function(v){ b.click = v; }));
+      /* số tym đã hiện sẵn trên thẻ bot thì lấy luôn, khỏi hỏi lại cho đỡ nghẽn */
+      var t = b.favEl ? b.favEl.textContent.trim() : '';
+      if(/^[0-9]+$/.test(t)) b.tym = parseInt(t, 10);
+      else {
+        var cu = SherryDem.soCu(b.key);
+        if(cu !== null) b.tym = cu;
+        SherryDem.lay(b.key).then(function(v){ if(v !== null){ b.tym = v; ve(); } });
+      }
+      var cuC = SherryDem.soCu('click-' + b.clickKey);
+      if(cuC !== null) b.click = cuC;
+      SherryDem.lay('click-' + b.clickKey).then(function(v){ if(v !== null){ b.click = v; ve(); } });
     });
-    Promise.all(jobs).then(function(){
-      data = {
-        tym:   bots.slice().sort(function(a,b){ return (b.tym||0)-(a.tym||0); }),
-        click: bots.slice().sort(function(a,b){ return (b.click||0)-(a.click||0); })
-      };
-      render();
-    });
+    ve();
   }
 
   function render(){
@@ -1600,14 +1657,15 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
       : 'Xếp theo số tym mọi người thả cho từng chồng.';
     var medal = ['👑','🥈','🥉'];
     bodyEl.innerHTML = list.map(function(b, i){
-      var score = isClick ? (b.click||0) : (b.tym||0);
+      var raw   = isClick ? b.click : b.tym;
       var unit  = isClick ? ' lượt' : ' 💗';
+      var score = (typeof raw === 'number') ? (raw + unit) : '…';
       var no = i < 3 ? medal[i] : (i+1);
       return '<div class="rank-row' + (i===0?' top1':'') + '">' +
                '<div class="rank-no">' + no + '</div>' +
                b.seal +
                '<div class="rank-name">' + b.name + '</div>' +
-               '<div class="rank-score">' + score + unit + '</div>' +
+               '<div class="rank-score">' + score + '</div>' +
              '</div>';
     }).join('');
   }
