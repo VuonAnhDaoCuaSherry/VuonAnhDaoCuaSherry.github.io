@@ -142,7 +142,7 @@ h1{
 .topbar{
   position:sticky;top:0;z-index:5;
   background:rgba(253,236,243,.88);backdrop-filter:blur(10px);
-  border-tom:1px solid var(--line);
+  border-bottom:1px solid var(--line);
 }
 .topbar-in{max-width:1040px;margin:0 auto;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.06rem;color:var(--head);text-decoration:none}
@@ -150,7 +150,7 @@ h1{
 .back:hover{color:#a23260}
 
 .section{padding:74px 0}
-.sec-head{text-align:center;margin-tom:38px}
+.sec-head{text-align:center;margin-bottom:38px}
 h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem,5vw,2.7rem);color:var(--head);margin:12px 0 8px}
 .sec-sub{color:var(--muted);font-size:.97rem}
 
@@ -168,7 +168,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   border-color:transparent;color:#fff;
   box-shadow:0 6px 16px rgba(224,100,147,.30);
 }
-  .filter.co-nut-gon{margin-tom:12px}
+  .filter.co-nut-gon{margin-bottom:12px}
   .filter.thu-gon{max-height:84px;overflow:hidden}
   .filter-toggle{
     display:block;margin:0 auto 36px;
@@ -178,12 +178,12 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
     transition:color .2s ease, border-color .2s ease;
 }
   .filter-toggle:hover{color:var(--rose-deep);border-color:var(--rose)}
-  .-count{
+  .bot-count{
     font-family:'Cormorant Garamond',serif;font-style:italic;
     font-size:1.3rem;color:var(--muted);text-align:center;
     margin:-16px 0 34px;
   }
-  .-count-n{color:var(--rose-deep);font-weight:700;font-size:1.2em}
+  .bot-count-n{color:var(--rose-deep);font-weight:700;font-size:1.2em}
 
 /* ───────────────────────── thẻ  ───────────────────────── */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px}
@@ -277,8 +277,8 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .lore-head .seal{width:50px;height:50px}
 .lore-tags{justify-content:flex-start;margin-top:7px}
 .lore-body{padding:8px 26px 18px;overflow-y:auto;font-size:.95rem}
-.lore-body p{margin-tom:12px}
-.lore-body p:last-child{margin-tom:0}
+.lore-body p{margin-bottom:12px}
+.lore-body p:last-child{margin-bottom:0}
 .lore-foot{
   padding:14px 26px 20px;border-top:1px dashed #f1c5d7;
   display:flex;align-items:center;justify-content:space-between;gap:10px;
@@ -326,7 +326,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 /* khung bảng xếp hạng */
 .bxh-box{max-width:480px}
 .bxh-head{padding:26px 26px 6px;text-align:center}
-.bxh-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-tom:14px}
+.bxh-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-bottom:14px}
 .bxh-tabs{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .bxh-tab{
   font-family:inherit;font-size:.82rem;font-weight:500;cursor:pointer;
@@ -339,7 +339,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .bxh-body{padding:6px 22px 24px;overflow-y:auto}
 .rank-row{
   display:flex;align-items:center;gap:13px;
-  padding:11px 13px;border-radius:14px;margin-tom:8px;
+  padding:11px 13px;border-radius:14px;margin-bottom:8px;
   background:#fff7fa;border:1px solid #f6dbe7;
 }
 .rank-row.top1{background:linear-gradient(120deg,#fff3d6,#ffe6ef);border-color:#f3c98a}
@@ -353,9 +353,9 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .bxh-open-wrap{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
 /* khung sổ lưu bút / review */
-.review-box{max-width:520px}
+.review-box{max-width:520px;overflow-y:auto}
 .review-head{padding:26px 26px 4px;text-align:center}
-.review-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-tom:6px}
+.review-head h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.7rem;color:var(--head);margin-bottom:6px}
 .review-sub{font-size:.86rem;color:var(--muted)}
 .review-form{padding:14px 26px 6px;display:flex;flex-direction:column}
 .review-l{font-size:.8rem;font-weight:500;color:var(--head);margin:12px 0 5px}
@@ -387,12 +387,12 @@ textarea.review-in{resize:vertical;line-height:1.55}
   padding:6px 12px;border-radius:999px;border:1px solid var(--line);
   background:#fff;color:var(--rose-deep);font-family:inherit;font-size:.8rem;
 }
-.review-list{padding:4px 26px 24px;overflow-y:auto}
+.review-list{padding:4px 26px 24px}
 .review-item{
   background:#fff7fa;border:1px solid #f6dbe7;border-radius:14px;
-  padding:13px 15px;margin-tom:10px;
+  padding:13px 15px;margin-bottom:10px;
 }
-.review-item-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-tom:5px}
+.review-item-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:5px}
 .review-to{font-size:.72rem;font-weight:600;color:var(--rose-deep);background:#ffe3ef;padding:3px 10px;border-radius:999px}
 .review-time{font-size:.7rem;color:var(--muted);white-space:nowrap}
 .review-text{font-size:.92rem;color:var(--ink);white-space:pre-wrap;word-break:break-word}
@@ -414,13 +414,13 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
 /* biến nút theme thành nút thả nổi góc dưới trái (chỉ cái có class .float) */
 .theme-toggle.float{
-  position:fixed;left:18px;tom:18px;z-index:30;
+  position:fixed;left:18px;bottom:18px;z-index:30;
   width:46px;height:46px;
   background:var(--card);
   box-shadow:0 8px 22px rgba(120,40,80,.22);
 }
 [data-theme="dark"] .theme-toggle.float{background:#221016;box-shadow:0 8px 22px rgba(0,0,0,.45)}
-@media (max-width:600px){ .theme-toggle.float{left:14px;tom:14px} }
+@media (max-width:600px){ .theme-toggle.float{left:14px;bottom:14px} }
 
 /* ───────────────────────── giới thiệu & footer ───────────────────────── */
 .about-text{max-width:620px;margin:0 auto;text-align:center;font-size:1.02rem}
@@ -582,9 +582,9 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 17: Phạm Thế Vinh ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="phamthevinh" data-fb="https://www.facebook.com/share/p/1BqRi4YeMb/" data-platform="✦ Google AI Studio"
+      <article class="card reveal" data-bot="phamthevinh" data-fb="https://www.facebook.com/share/p/1BqRi4YeMb/" data-platform=" data-platform="✦ Google AI Studio"
         data-link="https://aistudio.google.com/prompts/1vogqIUPsjfBoJYtt0nJBrwH17BP1sVCN" data-link-label="Bản BG"
-        data-link2="https://aistudio.google.com/prompts/1k0ttuwyP4kCfUgjx2Unc-QoMJ1ajNtC5" data-link2-label="Bản BL">
+        data-link2="" data-link2-label="Bản BL">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -612,13 +612,14 @@ textarea.review-in{resize:vertical;line-height:1.55}
           <p>Câu chuyện đặt vào bối cảnh một thị xã nhỏ vùng đồng bằng Bắc Bộ đầu thập niên 1930, xoay quanh dinh cơ bề thế của gia tộc họ Phạm. Nơi đó, đằng sau sự giàu sang là nề nếp phong kiến nghiệt ngã và khoảng cách giai cấp khốc liệt.</p>
           <p>Trọng tâm của câu chuyện là mối quan hệ đầy trắc trở giữa hai con người mang nhiều vết thương lòng. Phạm Thế Vinh là cậu Ba của gia đình, người gánh vác toàn bộ cơ nghiệp buôn bán. Bề ngoài, cậu mang vỏ bọc của một kẻ cộc cằn, thực dụng và sắc lạnh. Dù làm ra của cải, cậu vẫn bị nhà trên khinh rẻ vì gốc gác con vợ lẽ. Tận sâu bên trong, từ nỗi đau chứng kiến mẹ đẻ bị đày đọa thuở nhỏ, cậu mang bản năng âm thầm che chở những kẻ thế cô, nhưng luôn ngụy trang sự tử tế ấy bằng những lời nhiếc móc cay nghiệt.</p>
           <p>Nhân vật {{user}} là một kiếp mọn nơi đáy xã hội, mang phận con sen/thằng nhỏ hầu hạ dưới quyền uy của bà Cả. Xoay xở giữa những lóng ngóng vụng về của bản thân, {{user}} thường xuyên trở thành nơi trút giận và chịu đòn roi của nhà trên. Trong cái dinh thự ngột ngạt ấy, kẻ mắng chửi {{user}} nhiều nhất, lạ thay, lại chính là cậu Ba. Thế nhưng, mỗi lần ngọn roi mây sắp giáng xuống hay biến cố ập đến, lại luôn là cậu xuất hiện, lôi {{user}} ra khỏi cửa vạ bằng những cái cớ công việc ráo hoảnh và khô khốc nhất.</p>
-          <p>Đây là một lát cắt đời sống chân thực, nơi tình cảm không nảy nở bằng những lời đường mật, mà đâm chồi thật chậm, thật khẽ qua những che chở vụng về, thô ráp giữa gọng kìm của giai cấp, thị phi và những toan tính gia tộc.</p>          
+          <p>Đây là một lát cắt đời sống chân thực, nơi tình cảm không nảy nở bằng những lời đường mật, mà đâm chồi thật chậm, thật khẽ qua những che chở vụng về, thô ráp giữa gọng kìm của giai cấp, thị phi và những toan tính gia tộc.</p>
+        </div>
       </article>     
       
       <!-- [BOT] ─── Bot 16: Arthur Sterling ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="arthursterling" data-fb="https://www.facebook.com/share/p/1FCEwgUnXP/"✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/11nRXmjhWKtlW1gkFVc_ImqOhtRFXOOhH">
+      <article class="card reveal" data-bot="arthursterling" data-fb="https://www.facebook.com/share/p/1FCEwgUnXP/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/11nRXmjhWKtlW1gkFVc_ImqOhtRFXOOhH">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -652,7 +653,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       <!-- [BOT] ─── Bot 15: Hoắc Thừa Viễn ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="hoacthuavien" data-fb="https://www.facebook.com/share/p/1CsthivWmd/"✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1xPMkOblf6rQ0Gn3Sfp-ancrHt1vtSTOE">
+      <article class="card reveal" data-bot="hoacthuavien" data-fb="https://www.facebook.com/share/p/1CsthivWmd/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1xPMkOblf6rQ0Gn3Sfp-ancrHt1vtSTOE">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -687,7 +688,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       <!-- [BOT] ─── Bot 14: Ôn Lạc Trần ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="onlactran" data-fb="https://www.facebook.com/share/p/1AWRkpKchj/"✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1ya-HpSbvnE9RiL6dfWSOdKcpcSy_M6z2">
+      <article class="card reveal" data-bot="onlactran" data-fb="https://www.facebook.com/share/p/1AWRkpKchj/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1ya-HpSbvnE9RiL6dfWSOdKcpcSy_M6z2">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -720,7 +721,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       
       <!-- [BOT] ─── Bot 13: Vương Hoàng Bách ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="vuonghoangbach" data-fb="https://www.facebook.com/share/p/1DrbErnnQd/" data-platform="✦ Google AI Studio"
+      <article class="card reveal" data-bot="vuonghoangbach" data-fb="https://www.facebook.com/share/p/1DrbErnnQd/" data-platform=" data-platform="✦ Google AI Studio"
         data-link="https://aistudio.google.com/prompts/15AzHl5KofLTR-_Kc5OTuwxfEgbWsDlP8" data-link-label="Bản BG"
         data-link2="https://aistudio.google.com/prompts/1IQt0iYL3jGNX1XQwkOcjWDCTa35QtdAN" data-link2-label="Bản BL">
         <div class="card-top">
@@ -758,7 +759,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       <!-- [BOT] ─── Bot 12: Bronislav Valeryevich Tikhomirov ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="bronislav" data-clickkey="bronislav-2" data-fb="https://www.facebook.com/share/p/17YzsZN3wa/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1q3B_TSAIxAf28ayJrPQFgKQrsSj0WjuB">
+      <article class="card reveal" data-bot="bronislav" data-clickkey="bronislav-2" data-fb="https://www.facebook.com/share/p/17YzsZN3wa/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1q3B_TSAIxAf28ayJrPQFgKQrsSj0WjuB">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -793,7 +794,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       <!-- [BOT] ─── Bot 11: Dương Hữu Khiêm ───
            [TYM] data-bot: mã tym riêng, không dấu, không trùng
            [LINK BOT] data-link: dán link bot vào đây -->
-      <article class="card reveal" data-bot="khiem" data-fb="https://www.facebook.com/share/p/18rqAaQmaF/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
+      <article class="card reveal" data-bot="khiem" data-fb="https://www.facebook.com/share/p/18rqAaQmaF/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/15Rzulxkbx3U41gwd095pYQlK-BGu2jft">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -827,7 +828,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 10: Cổ Hiểu Thần ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="hieuthan" data-fb="https://www.facebook.com/share/p/1BZip5EYJ8/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1u222ZhpGq3WRZ8yiScNtU6XHhVoSLEQ0">
+      <article class="card reveal" data-bot="hieuthan" data-fb="https://www.facebook.com/share/p/1BZip5EYJ8/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1u222ZhpGq3WRZ8yiScNtU6XHhVoSLEQ0">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -861,7 +862,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 9: Cận Đình Sâm ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dinhsam" data-fb="https://www.facebook.com/share/p/1D4sxUfKfh/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1okGFeSxMqlfYZDUM9YwLGbCgDZl6m7ec">
+      <article class="card reveal" data-bot="dinhsam" data-fb="https://www.facebook.com/share/p/1D4sxUfKfh/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1okGFeSxMqlfYZDUM9YwLGbCgDZl6m7ec">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -898,7 +899,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 8: Khải Eden ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="khaieden" data-fb="https://www.facebook.com/share/p/1BTFsPckXK/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1fsKz_HNN6I7CqtR5vkgkGANcMws_HNeT">
+      <article class="card reveal" data-bot="khaieden" data-fb="https://www.facebook.com/share/p/1BTFsPckXK/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1fsKz_HNN6I7CqtR5vkgkGANcMws_HNeT">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -933,7 +934,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 7: Dạ Đông Phong ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dadongphong" data-fb="https://www.facebook.com/share/p/1CY1yQZrJ2/" data-platform="✦ Google AI Studio"
+      <article class="card reveal" data-bot="dadongphong" data-fb="https://www.facebook.com/share/p/1CY1yQZrJ2/" data-platform=" data-platform="✦ Google AI Studio"
         data-link="https://aistudio.google.com/app/prompts/1EK30zi6i9ARzrTAfKP5HslLfwMkM0fOf" data-link-label="Bản BG"
         data-link2="https://aistudio.google.com/app/prompts/1JAgVKJ3XC-bUNv9yh5hURJuKdJL7psby" data-link2-label="Bản BL">
         <div class="card-top">
@@ -972,7 +973,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 6: Dominic Sterling ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="dominicsterling" data-fb="https://www.facebook.com/share/p/1Ejo41np6a/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1C-pvfryQkceGJ2KwEyfXj_orEZ0BgrGl">
+      <article class="card reveal" data-bot="dominicsterling" data-fb="https://www.facebook.com/share/p/1Ejo41np6a/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1C-pvfryQkceGJ2KwEyfXj_orEZ0BgrGl">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1009,7 +1010,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 5: Đỗ Đình Thế Nguyên ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="thenguyen" data-fb="https://www.facebook.com/share/p/1QBNYP3BAL/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/16kegd7ei-hK_hC4xuRqKsRik2VXvjVMI">
+      <article class="card reveal" data-bot="thenguyen" data-fb="https://www.facebook.com/share/p/1QBNYP3BAL/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/16kegd7ei-hK_hC4xuRqKsRik2VXvjVMI">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1040,7 +1041,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
       <!-- [BOT] ─── Bot 4: Silas Sterling ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="silassterling" data-fb="https://www.facebook.com/share/p/1E7i4gns6H/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1bUJeNiWW8J-EcHpaYSFFhKPGDh7ZM3Bq">
+      <article class="card reveal" data-bot="silassterling" data-fb="https://www.facebook.com/share/p/1E7i4gns6H/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1bUJeNiWW8J-EcHpaYSFFhKPGDh7ZM3Bq">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1078,7 +1079,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
             <!-- [BOT] ─── Bot 3: Trần Khắc Hữu ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="trankhachuu" data-fb="https://www.facebook.com/share/p/1JAUrcTEXt/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1uBNO5aRHo7IIdrIA29d_ThbXMsDKsJYV">
+      <article class="card reveal" data-bot="trankhachuu" data-fb="https://www.facebook.com/share/p/1JAUrcTEXt/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/prompts/1uBNO5aRHo7IIdrIA29d_ThbXMsDKsJYV">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1114,7 +1115,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
             <!-- [BOT] ─── Bot 2: Hoắc Kính Hàn ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="hoackinhhan" data-fb="https://www.facebook.com/share/p/1JQ9vMtzhQ/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1WjUIZ0hD-LSsxJrhLagv9nO_gBkeDXET">
+      <article class="card reveal" data-bot="hoackinhhan" data-fb="https://www.facebook.com/share/p/1JQ9vMtzhQ/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/app/u/0/prompts/1WjUIZ0hD-LSsxJrhLagv9nO_gBkeDXET">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -1153,7 +1154,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
             <!-- [BOT] ─── Bot 1: Khương Dã Vọng ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="khuongdavong" data-fb="https://www.facebook.com/share/p/1BLvkXrwnW/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1AsbCEwrQQgQrxjowBIHPgIzgaDvO8E_o">
+      <article class="card reveal" data-bot="khuongdavong" data-fb="https://www.facebook.com/share/p/1BLvkXrwnW/" data-platform=" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/0/prompts/1AsbCEwrQQgQrxjowBIHPgIzgaDvO8E_o">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
