@@ -56,12 +56,14 @@ body{
   font-family:'Be Vietnam Pro',sans-serif;
   font-weight:300;
   background-color:var(--bg);
+  /* [NỀN CARO] ô caro là file caro-hong.png (nhớ up cùng thư mục với index.html).
+     Lớp voan trắng phủ lên cho chữ dễ đọc: chỉnh số .60 (cao = mờ caro hơn).
+     Ô caro to nhỏ: chỉnh số 200px ở dòng background-size. */
   background-image:
-    radial-gradient(rgba(224,100,147,.10) 1.2px, transparent 1.3px),
-    radial-gradient(900px 540px at 50% -8%, #fff7fa, transparent 62%),
-    radial-gradient(820px 620px at -8% 30%, rgba(242,163,189,.30), transparent 56%),
-    radial-gradient(760px 580px at 108% 82%, rgba(242,163,189,.26), transparent 58%);
-  background-size:26px 26px, auto, auto, auto;
+    radial-gradient(900px 540px at 50% -8%, rgba(255,255,255,.42), transparent 62%),
+    linear-gradient(rgba(255,251,253,.60), rgba(255,251,253,.60)),
+    url('caro-hong.png');
+  background-size:auto, auto, 200px 198px;
   color:var(--ink);
   line-height:1.75;
   overflow-x:hidden;
@@ -456,11 +458,20 @@ textarea.review-in{resize:vertical;line-height:1.55}
 }
 [data-theme="dark"] body {
   background-color: #150c10;
+  /* [NỀN CARO] chế độ tối: voan tối phủ dày lên caro, chỉ còn chút vân mờ.
+     Muốn thấy caro rõ hơn thì giảm số .93 xuống (vd .88). */
   background-image:
-    radial-gradient(rgba(239,77,110,.09) 1.2px, transparent 1.3px),
     radial-gradient(900px 540px at 50% -8%, rgba(140,25,55,.40), transparent 62%),
     radial-gradient(820px 620px at -8% 30%, rgba(110,18,45,.34), transparent 56%),
-    radial-gradient(760px 580px at 108% 82%, rgba(150,25,60,.30), transparent 58%);
+    radial-gradient(760px 580px at 108% 82%, rgba(150,25,60,.30), transparent 58%),
+    linear-gradient(rgba(21,12,16,.93), rgba(21,12,16,.93)),
+    url('caro-hong.png');
+  background-size: auto, auto, auto, auto, 200px 198px;
+}
+/* [NỀN CARO] trên điện thoại thu ô caro nhỏ lại cho vừa mắt */
+@media (max-width:600px){
+  body{background-size:auto, auto, 145px 144px}
+  [data-theme="dark"] body{background-size:auto, auto, auto, auto, 145px 144px}
 }
 [data-theme="dark"] .drop {
   background: radial-gradient(circle at 30% 30%, #ff6e88, #c0143a 76%);
