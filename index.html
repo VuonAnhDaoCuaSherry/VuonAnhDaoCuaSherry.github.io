@@ -41,6 +41,7 @@
 :root{
   --bg:#fdecf3;
   --card:#fffbfd;
+  --card-glass:rgba(255,251,253,.68);   /* [THE BOT] do duc cua khung bot: .68 = 68% */
   --line:#f5cbdc;
   --rose:#e06493;
   --rose-deep:#c2497a;
@@ -63,7 +64,7 @@ body{
     radial-gradient(900px 540px at 50% -8%, rgba(255,255,255,.42), transparent 62%),
     linear-gradient(rgba(255,251,253,.60), rgba(255,251,253,.60)),
     url('caro-hong.png');
-  background-size:auto, auto, 200px 198px;
+  background-size:auto, auto, 100px 99px;
   color:var(--ink);
   line-height:1.75;
   overflow-x:hidden;
@@ -191,7 +192,8 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px}
 .card{
   position:relative;display:flex;flex-direction:column;gap:13px;
-  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--card-glass);border:1px solid var(--line);border-radius:var(--radius);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
   padding:26px 24px 19px;overflow:hidden;cursor:pointer;
   box-shadow:0 8px 26px rgba(205,90,135,.08);
   transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
@@ -219,7 +221,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .card h3,.lore-title h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.58rem;line-height:1.2;color:var(--head)}
 .card-foot{
   display:flex;align-items:center;justify-content:space-between;gap:10px;
-  margin-top:2px;padding-top:14px;border-top:1px dashed #f1c5d7;
+  margin-top:auto;padding-top:14px;border-top:1px dashed #f1c5d7;
 }
 
 /* [TYM] nút tym */
@@ -448,6 +450,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 [data-theme="dark"] {
   --bg: #150c10;
   --card: #221016;
+  --card-glass: rgba(34,16,22,.72);     /* [THE BOT] do duc khung bot khi bat che do toi */
   --line: rgba(230,80,110,.26);
   --rose: #ef4d6e;
   --rose-deep: #ff7d97;
@@ -466,12 +469,12 @@ textarea.review-in{resize:vertical;line-height:1.55}
     radial-gradient(760px 580px at 108% 82%, rgba(150,25,60,.30), transparent 58%),
     linear-gradient(rgba(21,12,16,.93), rgba(21,12,16,.93)),
     url('caro-hong.png');
-  background-size: auto, auto, auto, auto, 200px 198px;
+  background-size: auto, auto, auto, auto, 100px 99px;
 }
 /* [NỀN CARO] trên điện thoại thu ô caro nhỏ lại cho vừa mắt */
 @media (max-width:600px){
-  body{background-size:auto, auto, 145px 144px}
-  [data-theme="dark"] body{background-size:auto, auto, auto, auto, 145px 144px}
+  body{background-size:auto, auto, 72px 71px}
+  [data-theme="dark"] body{background-size:auto, auto, auto, auto, 72px 71px}
 }
 [data-theme="dark"] .drop {
   background: radial-gradient(circle at 30% 30%, #ff6e88, #c0143a 76%);
