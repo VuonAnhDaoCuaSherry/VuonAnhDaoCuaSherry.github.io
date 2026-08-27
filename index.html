@@ -512,6 +512,28 @@ textarea.review-in{resize:vertical;line-height:1.55}
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(230, 28, 77, 0.2);
 }
+/* [TÌM KIẾM] ô tìm chồng */
+.tim-hop{
+  display:flex;align-items:center;gap:8px;
+  max-width:420px;margin:0 auto 18px;
+  background:var(--card-glass,#fff);border:1px solid var(--line);border-radius:999px;
+  padding:4px 6px 4px 16px;
+}
+.tim-hop:focus-within{border-color:var(--rose)}
+.tim-icon{font-size:.95rem;opacity:.75;line-height:1}
+.tim-o{
+  flex:1;min-width:0;border:none;background:transparent;outline:none;
+  font-family:inherit;font-size:.92rem;color:var(--head);padding:9px 0;
+}
+.tim-o::placeholder{color:var(--muted)}
+.tim-o::-webkit-search-cancel-button{display:none}
+.tim-xoa{
+  display:none;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;flex:0 0 auto;
+  background:transparent;border:none;color:var(--rose-deep);font-size:.85rem;
+}
+.tim-xoa:hover{background:rgba(224,100,147,.12)}
+.tim-trong{display:none;text-align:center;color:var(--muted);font-size:.95rem;padding:26px 0 8px}  
 </style>
 <script>try{var _t=localStorage.getItem('sherry-theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
@@ -1986,5 +2008,77 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
   });
 })();
 </script>
+<script>
+/* [TÌM KIẾM] ô tìm chồng theo tên, tag hoặc nội dung lore.
+   Gõ không dấu vẫn ra (vd gõ "khiem" vẫn thấy "Dương Hữu Khiêm").
+   Ô này ăn khớp với thanh lọc tag: đang lọc tag nào thì tìm trong tag đó. */
+(function(){
+  var grid = document.getElementById('grid');
+  var bar  = document.getElementById('filter');
+  if(!grid || !bar) return;
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+
+  function boDau(s){
+    return (s || '').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/\u0111/g, 'd').replace(/\s+/g, ' ').trim();
+  }
+
+  /* gom sẵn chữ của từng chồng để tìm cho nhanh */
+  cards.forEach(function(c){
+    if(c.classList.contains('soon')) return;
+    var ten  = c.querySelector('h3') ? c.querySelector('h3').textContent : '';
+    var tags = Array.prototype.map.call(c.querySelectorAll('.tag'), function(t){ return t.textContent; }).join(' ');
+    var lore = c.querySelector('.lore') ? c.querySelector('.lore').textContent : '';
+    c.setAttribute('data-tim', boDau(ten + ' ' + tags + ' ' + lore));
+  });
+
+  /* dựng ô tìm kiếm, đặt ngay trên thanh lọc tag */
+  var hop = document.createElement('div');
+  hop.className = 'tim-hop';
+  hop.innerHTML =
+    '<span class="tim-icon">🔍</span>' +
+    '<input class="tim-o" type="search" autocomplete="off" placeholder="Tìm chồng theo tên, tag hay nội dung...">' +
+    '<button class="tim-xoa" type="button" title="Xoá">✕</button>';
+  bar.parentNode.insertBefore(hop, bar);
+
+  var o   = hop.querySelector('.tim-o');
+  var xoa = hop.querySelector('.tim-xoa');
+
+  var trong = document.createElement('p');
+  trong.className = 'tim-trong';
+  trong.textContent = 'Không tìm thấy chồng nào hợp ý 🍒';
+  grid.parentNode.insertBefore(trong, grid.nextSibling);
+
+  function locLai(){
+    var tu   = boDau(o.value);
+    var chip = bar.querySelector('.chip.on');
+    var tag  = chip ? chip.getAttribute('data-val') : '*';
+    var thay = 0;
+    cards.forEach(function(c){
+      var hien;
+      if(c.classList.contains('soon')){
+        hien = (tag === '*' && !tu);
+      } else {
+        var hopTag = (tag === '*') || Array.prototype.some.call(c.querySelectorAll('.tag'), function(t){
+          return t.textContent.trim() === tag;
+        });
+        var hopTu = !tu || (c.getAttribute('data-tim') || '').indexOf(tu) >= 0;
+        hien = hopTag && hopTu;
+        if(hien) thay++;
+      }
+      c.classList.toggle('is-hide', !hien);
+    });
+    trong.style.display = thay ? 'none' : 'block';
+    xoa.style.display   = o.value ? 'flex' : 'none';
+  }
+
+  o.addEventListener('input', locLai);
+  o.addEventListener('keydown', function(e){ if(e.key === 'Escape'){ o.value = ''; locLai(); } });
+  xoa.addEventListener('click', function(){ o.value = ''; locLai(); o.focus(); });
+  bar.addEventListener('click', function(e){ if(e.target.closest('.chip')) locLai(); });
+  locLai();
+})();
+</script>  
 </body>
 </html>
