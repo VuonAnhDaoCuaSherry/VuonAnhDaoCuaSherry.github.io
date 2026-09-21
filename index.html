@@ -534,6 +534,41 @@ textarea.review-in{resize:vertical;line-height:1.55}
 }
 .tim-xoa:hover{background:rgba(224,100,147,.12)}
 .tim-trong{display:none;text-align:center;color:var(--muted);font-size:.95rem;padding:26px 0 8px}  
+
+/* [CẢNH BÁO 21+] khung xác nhận độ tuổi */
+.tuoi-overlay{
+  position:fixed;inset:0;z-index:60;
+  display:flex;align-items:center;justify-content:center;padding:18px;
+  background:rgba(40,8,18,.55);backdrop-filter:blur(5px);
+  animation:fadeIn .25s ease;
+}
+.tuoi-box{
+  width:min(440px,100%);max-height:calc(100vh - 36px);overflow-y:auto;
+  background:var(--card);border:1px solid rgba(192,20,58,.35);border-radius:22px;
+  padding:26px 24px 22px;text-align:center;
+  box-shadow:0 26px 60px rgba(60,10,25,.35);
+  animation:pop .3s ease;
+}
+.tuoi-title{
+  font-family:'Be Vietnam Pro',sans-serif;font-weight:600;
+  font-size:1.18rem;letter-spacing:.05em;line-height:1.4;
+  color:#c0143a;background:rgba(192,20,58,.08);
+  border:1px solid rgba(192,20,58,.22);border-radius:14px;
+  padding:11px 14px;margin-bottom:16px;
+}
+.tuoi-body p{font-size:.93rem;color:var(--ink);margin-bottom:11px}
+.tuoi-body p:last-child{margin-bottom:0}
+.tuoi-nut{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.tuoi-dongy,.tuoi-desau{
+  width:100%;padding:12px 16px;border-radius:999px;cursor:pointer;
+  font-family:inherit;font-size:.92rem;font-weight:600;
+}
+.tuoi-dongy{border:none;color:#fff;background:linear-gradient(120deg,#e0395e,#b0102f);box-shadow:0 8px 22px rgba(176,16,47,.3)}
+.tuoi-dongy:hover{box-shadow:0 10px 26px rgba(176,16,47,.42)}
+.tuoi-desau{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.tuoi-desau:hover{border-color:var(--rose);color:var(--rose-deep)}
+[data-theme="dark"] .tuoi-box{border-color:rgba(255,106,134,.3)}
+[data-theme="dark"] .tuoi-title{color:#ff6a86;background:rgba(255,106,134,.1);border-color:rgba(255,106,134,.28)}  
 </style>
 <script>try{var _t=localStorage.getItem('sherry-theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
@@ -605,12 +640,47 @@ textarea.review-in{resize:vertical;line-height:1.55}
 
     <!-- [BXH] nút mở bảng xếp hạng -->
     <div class="bxh-open-wrap reveal">
-      <button class="bxh-open" type="button" id="bxhOpen">🏆 Bảng xếp hạng chồng quốc dân</button>
+      <button class="bxh-open" type="button" id="bxhOpen">🏆 Bảng xếp hạng chồng iu</button>
       <button class="bxh-open" type="button" id="reviewOpen">💌 Sổ lưu bút &amp; review</button>
     </div>
 
     <div class="grid" id="grid">
 
+            <!-- [BOT] ─── Bot 24: La Roseraie ───
+           [TYM] data-bot · [LINK BOT] data-link -->
+      <article class="card reveal" data-21 data-bot="laroseraie" data-fb="https://www.facebook.com/share/p/1QtH1Uz1iE/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/14S1UKyjiTmEr3bg5m7gO4k-yvBOdxWlS">
+        <div class="card-top">
+          <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
+            <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+            <ellipse cx="47" cy="6.5" rx="8" ry="4.2" fill="#bcd6a0" transform="rotate(16 47 6.5)"/>
+            <circle cx="32" cy="39" r="22" fill="url(#cherryG)"/>
+            <ellipse cx="23.5" cy="31" rx="6.2" ry="3.6" fill="#fff" opacity=".9" transform="rotate(-24 23.5 31)"/>
+            <text x="32" y="47" text-anchor="middle" font-family="'Cormorant Garamond',serif" font-size="23" font-weight="700" fill="#fff"></text>
+          </svg>
+          <div class="tags">
+            <span class="tag">Hiện Đại</span>
+            <span class="tag">Pháp</span>
+            <span class="tag">NP</span>                        
+            <span class="tag">Dark Romance</span>
+            <span class="tag">Trả thù</span>            
+            <span class="tag adult">21+</span>            
+          </div>
+        </div>
+        <h3>LA ROSERAIE</h3>
+        <div class="card-foot">
+          <button class="fav" type="button" title="Tym cho chồng một cái"><span class="heart">♥</span> <span class="fav-n">…</span></button>
+          <span class="lore-btn">Lore <span>→</span></span>
+        </div>
+        <!-- [LORE] nội dung dài của bot -->
+        <div class="lore" hidden>
+          <p>Năm mười tuổi, theo mẹ bước chân vào gia tộc Cassel, bạn không ngờ mình vừa tự nhốt bản thân vào chiếc lồng son tăm tối của giới quý tộc Paris. Những năm tháng trưởng thành tại Viện Cao học ưu tú Châtelet sau đó nhanh chóng biến thành một trò chơi quyền lực và thao túng nghẹt thở mà bạn là nạn nhân duy nhất.</p>
+          <p>Dưới ánh sáng ban ngày, bạn phải cúi đầu chịu đựng sự sỉ nhục công khai từ Julien Cassel. Người anh kế ngạo mạn ấy dùng bạo lực và sự cay độc để đày đọa bạn , bấu víu vào sự thù ghét hòng che giấu dục vọng cấm kỵ đang từng ngày gặm nhấm lý trí hắn. Kẻ đứng mỉm cười phía sau sự tàn nhẫn đó là Chloé Moreau. Dưới vỏ bọc của một tiểu thư mỏng manh, ả ta đã tiêm nọc độc bóp nghẹt tương lai bạn , ngang nhiên vu oan bạn ăn cắp tác phẩm nghệ thuật chỉ để giữ vững vương miện công chúa trong hội tinh anh.</p>
+          <p>Thế nhưng, địa ngục thực sự chỉ mở cửa khi màn đêm buông xuống. Antoine de Vigan, chàng thiếu gia dịu dàng từng là chiếc phao cứu sinh duy nhất của bạn trong đêm bị hàm oan, lại lột xác thành một ác quỷ. Anh ta đã giăng sẵn một chiếc bẫy ngọt ngào, lén quay lại cảnh ân ái đêm đó và dùng đoạn phim làm thòng lọng tống tiền. Từ một nạn nhân, bạn bị ép trở thành con rối ngoan ngoãn phục tùng khao khát kiểm soát bệnh hoạn của anh ta.</p>
+          <p>Một kẻ dùng bạo lực để chối bỏ dục vọng, một kẻ lấy danh nghĩa cứu rỗi để giam cầm linh hồn, và một kẻ mượn sự yếu đuối giả tạo để dìm chết người khác. Ba con người ấy dệt nên một bức tranh tình yêu vặn vẹo, nơi sự chiếm hữu lên ngôi. Giữa những mưu mô giằng xé tàn nhẫn đó, bạn sẽ vỡ vụn dưới đáy vực, hay đang âm thầm chờ ngày lật ngược ván cờ để phá nát chiếc lồng kép của giới thượng lưu?</p>
+          <p>Và ngay khi ván cờ chao đảo, Charles xuất hiện. Người đàn ông mang quyền lực áp đảo ấy bước vào cuộc đời bạn như một biến số không thể lường trước. Liệu gã sẽ là đấng cứu rỗi đưa bạn thoát khỏi vũng lầy, hay gã vốn dĩ chỉ đang định giá để nhốt bạn vào một chiếc lồng khác tàn khốc hơn.</p>
+        </div>
+      </article>             
+      
             <!-- [BOT] ─── Bot 23: Tạ Huyền Cẩn ───
            [TYM] data-bot · [LINK BOT] data-link -->
       <article class="card reveal" data-bot="tahuyencan" data-fb="https://www.facebook.com/share/p/19NkLQEwtW/" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/prompts/1m9bEpLcOnWt9urg9iB56CaPXjuWLd2Ef">
@@ -715,7 +785,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
       
             <!-- [BOT] ─── Bot 20: Momoiro Sento ───
            [TYM] data-bot · [LINK BOT] data-link -->
-      <article class="card reveal" data-bot="momoirosento" data-fb="https://docs.google.com/document/d/1hxjkSmpkBpj4H8QsfSdwmcsTRpfWjmy_5a9ALuPrwaU/edit?tab=t.0" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/9/prompts/1TTDnr741TKJC_AB-SIGLj3YcXvN0ian0">
+      <article class="card reveal" data-21 data-bot="momoirosento" data-fb="https://docs.google.com/document/d/1hxjkSmpkBpj4H8QsfSdwmcsTRpfWjmy_5a9ALuPrwaU/edit?tab=t.0" data-platform="✦ Google AI Studio" data-link="https://aistudio.google.com/u/9/prompts/1TTDnr741TKJC_AB-SIGLj3YcXvN0ian0">
         <div class="card-top">
           <svg class="seal" viewBox="0 0 64 64" aria-hidden="true">
             <path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>
@@ -734,7 +804,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
             <span class="tag adult">21+</span>            
           </div>
         </div>
-        <h3>🔞 MOMOIRO SENTO | YAKUZA | NP1v3 🔞 H+++🔥</h3>
+        <h3>MOMOIRO SENTO | YAKUZA</h3>
         <div class="card-foot">
           <button class="fav" type="button" title="Tym cho chồng một cái"><span class="heart">♥</span> <span class="fav-n">…</span></button>
           <span class="lore-btn">Lore <span>→</span></span>
@@ -2149,6 +2219,89 @@ window.addEventListener('hashchange', function(){ setTimeout(kiemTraGon, 50); })
   xoa.addEventListener('click', function(){ o.value = ''; locLai(); o.focus(); });
   bar.addEventListener('click', function(e){ if(e.target.closest('.chip')) locLai(); });
   locLai();
+})();
+</script>  
+<!-- [CẢNH BÁO 21+] khung xác nhận độ tuổi, chỉ hiện với bot có gắn data-21 -->
+<div class="tuoi-overlay is-hidden" id="tuoiGate">
+  <div class="tuoi-box" role="alertdialog" aria-modal="true" aria-labelledby="tuoiTitle">
+    <h3 class="tuoi-title" id="tuoiTitle">🔞 CẢNH BÁO NỘI DUNG (21+)</h3>
+    <div class="tuoi-body">
+      <p>Bot này chứa các yếu tố tình dục, bạo lực nặng và ngôn từ trần trụi, thô tục. Bạn vui lòng cân nhắc kỹ trước khi trải nghiệm và xác nhận mình từ 21 tuổi trở lên nha.</p>
+      <p>Sherry xin phép miễn trừ mọi trách nhiệm khi bạn đã lựa chọn tiếp tục. Hãy là một người chơi có trách nhiệm với trải nghiệm của chính mình nhé! 🥀✨</p>
+    </div>
+    <div class="tuoi-nut">
+      <button class="tuoi-dongy" type="button" id="tuoiYes">Tôi đã đủ 21+ &amp; Đồng ý</button>
+      <button class="tuoi-desau" type="button" id="tuoiNo">Để sau nha</button>
+    </div>
+  </div>
+</div>
+<script>
+/* [CẢNH BÁO 21+] chặn nút vào bot của những chồng có gắn data-21,
+   hỏi xác nhận độ tuổi trước khi mở link. */
+(function(){
+  var NHO_LUA_CHON = true;  /* true: đồng ý một lần, máy đó không hỏi lại bot đó nữa. false: lần nào bấm cũng hỏi */
+  var gate = document.getElementById('tuoiGate');
+  if(!gate) return;
+  var nutCo = document.getElementById('tuoiYes');
+  var nutKhong = document.getElementById('tuoiNo');
+  var dangCho = null, khoaCho = '', choQua = false, nho = {};
+
+  function daDongY(k){
+    if(!NHO_LUA_CHON) return false;
+    if(nho[k]) return true;
+    try { return !!localStorage.getItem(k); } catch(e){ return false; }
+  }
+  function ghiNho(k){
+    if(!NHO_LUA_CHON) return;
+    nho[k] = true;
+    try { localStorage.setItem(k, '1'); } catch(e){}
+  }
+  function timThe(href){
+    href = (href || '').trim();
+    if(!href) return null;
+    var ds = document.querySelectorAll('#grid .card[data-21]');
+    for(var i = 0; i < ds.length; i++){
+      if((ds[i].getAttribute('data-link') || '').trim() === href ||
+         (ds[i].getAttribute('data-link2') || '').trim() === href) return ds[i];
+    }
+    return null;
+  }
+  function dong(){ gate.classList.add('is-hidden'); }
+  function huy(){
+    var a = dangCho;
+    dong(); dangCho = null;
+    if(a){ try { a.focus(); } catch(e){} }
+  }
+
+  /* bắt cú bấm vào nút link trong khung lore trước khi nó kịp mở */
+  document.addEventListener('click', function(e){
+    if(choQua){ choQua = false; return; }
+    var a = e.target.closest ? e.target.closest('#loreLinks a') : null;
+    if(!a) return;
+    var the = timThe(a.getAttribute('href'));
+    if(!the) return;
+    var k = 'sherry-21-' + (the.getAttribute('data-bot') || a.getAttribute('href'));
+    if(daDongY(k)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    dangCho = a; khoaCho = k;
+    gate.classList.remove('is-hidden');
+    nutKhong.focus();
+  }, true);
+
+  nutCo.addEventListener('click', function(){
+    var a = dangCho;
+    ghiNho(khoaCho);
+    dong(); dangCho = null;
+    if(a){ choQua = true; a.click(); }  /* bấm lại link: lần này cho qua, vẫn đếm lượt ghé */
+  });
+  nutKhong.addEventListener('click', huy);
+  gate.addEventListener('click', function(e){ if(e.target === gate) huy(); });
+  window.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !gate.classList.contains('is-hidden')){
+      e.preventDefault(); e.stopPropagation(); huy();
+    }
+  }, true);
 })();
 </script>  
 </body>
