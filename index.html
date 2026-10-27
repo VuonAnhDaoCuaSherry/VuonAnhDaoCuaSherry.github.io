@@ -26,7 +26,7 @@
 
   [THÊM CHỒNG] Copy khối mẫu này, dán vào ngay dưới dòng <div class="grid" id="grid">, rồi sửa:
 
-      <article class="card reveal" data-bot="machong" data-chu="K" data-img=""
+      <article class="card reveal" data-bot="machong" data-chu="K" data-img="" data-ngay="25/10/2026"
         data-fb="link bài plot"
         data-link="link bot">
         <div class="tags">
@@ -663,6 +663,39 @@ textarea.review-in{resize:vertical;line-height:1.55}
   .card,.btn,.chip,.fav,.card-anh img,.tc-links .visit{transition:none}
   .modal,.modal-box,.tuoi-overlay,.tuoi-box,.trang-chong{animation:none}
 }
+/* ════════════════════ [NHÃN MỚI] + [SẮP XẾP] ════════════════════ */
+.nhan-moi{
+  position:absolute;top:12px;left:12px;z-index:2;pointer-events:none;
+  font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1;
+  padding:6px 11px;border-radius:999px;color:#fff;
+  background:linear-gradient(120deg,#ef87ab,#df5e90);
+  box-shadow:0 4px 12px rgba(205,90,135,.35);
+}
+.tag.tag-moi{background:linear-gradient(120deg,#ef87ab,#df5e90);border-color:transparent;color:#fff}
+.tc-ngay{margin-top:4px;font-size:.76rem;color:var(--muted)}
+.tc-ngay:empty{display:none}
+
+.sap-xep{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 10px;margin:-18px 0 24px}
+.sap-nhan{font-size:.78rem;color:var(--muted)}
+.sap-hop{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--card-glass);border:1px solid var(--line)}
+.sap-nut{
+  font-family:inherit;font-size:.8rem;font-weight:500;line-height:1.4;cursor:pointer;
+  padding:6px 14px;border-radius:999px;border:none;background:transparent;color:var(--rose-deep);
+  transition:background .2s ease, color .2s ease;
+}
+.sap-nut:hover{background:rgba(224,100,147,.1)}
+.sap-nut.on{background:linear-gradient(120deg,#ef87ab,#df5e90);color:#fff;cursor:default}
+.sap-tt{font-size:.76rem;color:var(--muted)}
+.sap-tt:empty{display:none}
+
+[data-theme="dark"] .nhan-moi,
+[data-theme="dark"] .tag.tag-moi,
+[data-theme="dark"] .sap-nut.on{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
+[data-theme="dark"] .nhan-moi{box-shadow:0 4px 12px rgba(0,0,0,.45)}
+
+@media (max-width:600px){
+  .nhan-moi{top:8px;left:8px;font-size:.58rem;padding:5px 9px}
+}  
 </style>
 <script>
 document.documentElement.classList.add('js');
@@ -700,7 +733,8 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
     <a class="btn btn-primary" href="#garden">Dạo vườn 🍒</a>
     <!-- [LINK FACEBOOK] -->
     <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Facebook</a>
-    <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
+    <!-- [LINK DISCORD] dán link mời Discord vào href bên dưới -->
+    <a class="btn" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener">Discord</a>    <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
   </div>
 
   <p class="gate-hint reveal">bước qua cổng để gặp chồng iu</p>
@@ -742,7 +776,7 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
     <div class="grid" id="grid">
 
       <!-- ─── Bot 25: Nghiêm Thế Ngạn ─── -->
-      <article class="card reveal" data-bot="nghiemthengan" data-chu="N" data-img=""
+      <article class="card reveal" data-bot="nghiemthengan" data-ngay="24/10/2026" data-chu="N" data-img="nghiemthengan.jpg"
         data-fb="https://www.facebook.com/share/p/1HyopeAdmf/"
         data-link="https://aistudio.google.com/prompts/1iTGg5JIfvU-kQpnyJM3ikExV4mPWM8yl">
         <div class="tags">
@@ -1354,7 +1388,8 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
     <div class="wrap">
       <!-- [LINK FACEBOOK] -->
       <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Theo dõi trên Facebook</a>
-      <p class="foot-note">Mọi nhân vật trong vườn đều là hư cấu · Nội dung dành cho người dùng 18+</p>
+      <!-- [LINK DISCORD] dán link mời Discord vào href bên dưới -->
+      <a class="btn" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener">Tham gia Discord 🍒</a>      <p class="foot-note">Mọi nhân vật trong vườn đều là hư cấu · Nội dung dành cho người dùng 18+</p>
       <!-- [ĐẾM KHÁCH] dòng đếm tự động -->
       <p class="visit-count" id="visitCount"></p>
       <p class="foot-copy">© 2026 Vườn Anh Đào của Sherry</p>
@@ -2113,6 +2148,135 @@ var TrangChong = (function(){
 })();
 
 /* ════════════════════════════════════════════════════════════════
+   NHÃN MỚI + SẮP XẾP
+   Chồng có data-ngay trong SO_NGAY_MOI ngày gần nhất tự mang nhãn "Mới",
+   quá hạn thì nhãn tự tắt. Ngày ghi dạng 25/10/2026.
+   Sắp xếp: Mới nhất (chồng mang nhãn lên đầu, còn lại theo thứ tự trong file),
+   Nhiều tym, A → Z.
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  var SO_NGAY_MOI = 30;   /* nhãn "Mới" hiện bao nhiêu ngày kể từ ngày lên kệ */
+
+  function docNgay(s){
+    s = String(s || '').trim();
+    var m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/.exec(s), y, mo, d;
+    if(m){ d = +m[1]; mo = +m[2]; y = +m[3]; }
+    else if((m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s))){ y = +m[1]; mo = +m[2]; d = +m[3]; }
+    else return null;
+    var t = new Date(y, mo - 1, d);
+    return (t.getFullYear() === y && t.getMonth() === mo - 1 && t.getDate() === d) ? t : null;
+  }
+  function inNgay(t){
+    return ('0' + t.getDate()).slice(-2) + '/' + ('0' + (t.getMonth() + 1)).slice(-2) + '/' + t.getFullYear();
+  }
+
+  /* gắn ngày và nhãn cho từng chồng */
+  var homNay = new Date();
+  homNay.setHours(0, 0, 0, 0);
+  DuLieu.ds.forEach(function(c, i){
+    c.viTri = i;
+    c.ngay = docNgay(c.the.getAttribute('data-ngay'));
+    c.moi = !!c.ngay && (homNay - c.ngay) / 86400000 < SO_NGAY_MOI;
+    if(c.moi){
+      var n = document.createElement('span');
+      n.className = 'nhan-moi';
+      n.textContent = 'Mới';
+      c.the.appendChild(n);
+    }
+  });
+
+  /* trang chồng: thêm nhãn vào dòng tag và dòng ngày lên kệ */
+  var tcNen = $('tcNen'), tcNgay = document.createElement('p');
+  tcNgay.className = 'tc-ngay';
+  tcNen.parentNode.insertBefore(tcNgay, tcNen.nextSibling);
+  var moCu = TrangChong.mo;
+  TrangChong.mo = function(c){
+    moCu(c);
+    tcNgay.textContent = c.ngay ? '🍒 Lên kệ ngày ' + inNgay(c.ngay) : '';
+    if(c.moi){
+      var n = document.createElement('span');
+      n.className = 'tag tag-moi';
+      n.textContent = '✨ Mới lên kệ';
+      var tags = $('tcTags');
+      tags.insertBefore(n, tags.firstChild);
+    }
+  };
+
+  /* sắp xếp */
+  var grid = $('grid');
+  var choChin = mang(grid.querySelectorAll('.card.soon'));
+  var boSoSanh = (window.Intl && Intl.Collator) ? new Intl.Collator('vi', { sensitivity: 'base', numeric: true }) : null;
+  function theoMoi(a, b){
+    if(a.moi !== b.moi) return a.moi ? -1 : 1;
+    if(a.moi && a.ngay.getTime() !== b.ngay.getTime()) return b.ngay - a.ngay;
+    return a.viTri - b.viTri;
+  }
+  function theoTym(a, b){
+    var x = Dem.soCu(a.khoa), y = Dem.soCu(b.khoa);
+    return ((y === null ? -1 : y) - (x === null ? -1 : x)) || theoMoi(a, b);
+  }
+  function theoTen(a, b){
+    return (boSoSanh ? boSoSanh.compare(a.tenChuan, b.tenChuan) : a.tenChuan.localeCompare(b.tenChuan)) || theoMoi(a, b);
+  }
+  var cach = { moi: theoMoi, tym: theoTym, az: theoTen };
+  var che = 'moi', lanDem = 0;
+
+  /* sắp cả DuLieu.ds để nút chồng trước, chồng sau trên trang chồng đi theo thứ tự đang xem */
+  function apDung(){
+    DuLieu.ds.sort(cach[che]);
+    var manh = document.createDocumentFragment();
+    DuLieu.ds.forEach(function(c){ manh.appendChild(c.the); });
+    choChin.forEach(function(s){ manh.appendChild(s); });
+    grid.appendChild(manh);
+  }
+
+  var thanh = document.createElement('div');
+  thanh.className = 'sap-xep';
+  thanh.setAttribute('role', 'group');
+  thanh.setAttribute('aria-label', 'Sắp xếp danh sách chồng');
+  thanh.innerHTML = '<span class="sap-nhan">Sắp xếp</span>' +
+    '<span class="sap-hop">' +
+      '<button type="button" class="sap-nut on" data-che="moi" aria-pressed="true">Mới nhất</button>' +
+      '<button type="button" class="sap-nut" data-che="tym" aria-pressed="false">Nhiều tym</button>' +
+      '<button type="button" class="sap-nut" data-che="az" aria-pressed="false">A → Z</button>' +
+    '</span>' +
+    '<span class="sap-tt" aria-live="polite"></span>';
+  grid.parentNode.insertBefore(thanh, grid);
+  var trangThai = thanh.querySelector('.sap-tt');
+
+  /* "Nhiều tym" cần số tym của mọi chồng: lấy nốt số còn thiếu rồi mới sắp,
+     chờ quá 3 giây thì sắp tạm bằng số đang có, đủ số thì sắp lại */
+  function sapTym(){
+    var thieu = DuLieu.ds.filter(function(c){ return Dem.soCu(c.khoa) === null; });
+    if(!thieu.length){ apDung(); return; }
+    var lan = ++lanDem;
+    trangThai.textContent = 'Đang đếm tym…';
+    var hen = setTimeout(function(){ if(lan === lanDem) apDung(); }, 3000);
+    Promise.all(thieu.map(function(c){
+      if(xemThe) xemThe.unobserve(c.the);
+      return Tym.tai(c.khoa, true);
+    })).then(function(){
+      clearTimeout(hen);
+      if(lan !== lanDem) return;
+      trangThai.textContent = '';
+      apDung();
+    });
+  }
+
+  thanh.addEventListener('click', function(e){
+    var b = e.target.closest('.sap-nut');
+    if(!b || b.classList.contains('on')) return;
+    mang(thanh.querySelectorAll('.sap-nut')).forEach(function(x){
+      x.classList.toggle('on', x === b);
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
+    che = b.getAttribute('data-che');
+    lanDem++;
+    trangThai.textContent = '';
+    if(che === 'tym') sapTym(); else apDung();
+  });
+  apDung();
+})();/* ════════════════════════════════════════════════════════════════
    ĐIỀU HƯỚNG
      #                 cổng vườn
      #garden           danh sách chồng
