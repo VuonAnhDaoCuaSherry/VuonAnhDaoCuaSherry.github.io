@@ -21,8 +21,10 @@
     [THẺ BOT]        độ đục khung thẻ
     [ẢNH CHỒNG]      tỉ lệ khung ảnh trên thẻ và trang chồng
     [LINK FACEBOOK]  link trang Facebook ở cổng và cuối trang
+    [LINK DISCORD]   link mời Discord ở cổng và cuối trang
+    [SẮP XẾP]        thanh sắp xếp Mới nhất / Nhiều tym
     [GIỚI THIỆU]     đoạn giới thiệu Sherry
-    CẤU HÌNH         đầu khối mã lệnh ở cuối file: link Google Sheet review, cảnh báo 21+
+    CẤU HÌNH         đầu khối mã lệnh ở cuối file: link Google Sheet review, cảnh báo 21+, số ngày giữ nhãn Mới
 
   [THÊM CHỒNG] Copy khối mẫu này, dán vào ngay dưới dòng <div class="grid" id="grid">, rồi sửa:
 
@@ -44,8 +46,11 @@
     data-bot          mã riêng của chồng: không dấu, không khoảng trắng, không trùng chồng khác.
                       Dùng cho số tym và link trang riêng. Đã đặt thì đừng đổi, đổi là mất tym.
     data-chu          chữ khắc trên quả cherry. Để trống thì quả cherry không có chữ.
-    data-img          đường dẫn ảnh chồng, ví dụ anh/khiem.webp (ảnh để trong thư mục anh trên repo).
+    data-img          đường dẫn ảnh chồng, ví dụ hubby/khiem.jpg (ảnh để trong thư mục hubby trên repo).
+                      Tên file phân biệt chữ hoa chữ thường: khiem.PNG và khiem.png là hai file khác nhau.
                       Để trống thì hiện quả cherry. Ảnh dọc tỉ lệ 3:4 là vừa khung nhất.
+    data-ngay         ngày lên kệ, ghi dạng 25/10/2026. Trong 30 ngày kể từ ngày này thẻ tự mang nhãn "Mới"
+                      và đứng đầu danh sách, hết hạn thì nhãn tự tắt. Muốn đổi số ngày thì sửa SO_NGAY_MOI.
     data-fb           link bài plot đầy đủ, Facebook hay Google Docs đều được. Để trống thì ẩn nút.
     data-link         link vào bot. Nút mặc định ghi "Gặp chồng liền".
     data-link-label   đổi chữ trên nút thứ nhất, ví dụ "Bản BG".
@@ -66,7 +71,9 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+<!-- mở sẵn đường tới bộ đếm tym và lượt ghé để số hiện nhanh hơn -->
+<link rel="preconnect" href="https://abacus.jasoncameron.dev" crossorigin>
 
 <style>
 /* ════════════════════ 1. MÀU VÀ NỀN ════════════════════ */
@@ -80,7 +87,6 @@
   --head:#4d2b39;
   --ink:#6d4a57;
   --muted:#ad8295;
-  --green:#a8c98b;
   --radius:20px;
   --ti-le-anh:3/4;                       /* [ẢNH CHỒNG] tỉ lệ khung ảnh, rộng/cao. Muốn ảnh ngang thì đổi 4/3 */
 }
@@ -145,7 +151,6 @@ h1{
 /* [ẢNH] khung ảnh thương hiệu */
 .hero-art{width:min(260px,60vw);margin:30px auto 8px;transform:rotate(-2.5deg)}
 .hero-art img{width:100%;display:block;filter:drop-shadow(0 14px 26px rgba(254,252,253,.45))}
-.cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
 .btn{
   display:inline-flex;align-items:center;gap:9px;
   padding:12px 28px;border-radius:999px;
@@ -159,7 +164,36 @@ h1{
   color:#fff;box-shadow:0 8px 24px rgba(224,100,147,.35);
 }
 .btn-primary:hover{box-shadow:0 12px 30px rgba(224,100,147,.45)}
-.gate-hint{margin-top:22px;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+/* nút Dạo vườn đứng riêng một hàng, to hơn nút thường một chút */
+.cta{margin-top:26px}
+.cta .btn{padding:14px 44px;font-size:1rem}
+.gate-hint{margin-top:18px;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+/* logo tròn Facebook, Discord dưới nút Dạo vườn: nền trắng đục, biểu tượng xám hồng cho chìm hơn nút Dạo vườn.
+   Biểu tượng lấy từ bộ Font Awesome bản miễn phí qua jsDelivr; tải lỗi thì nút tự hiện chữ thay logo. */
+.mang-xh{display:flex;gap:14px;justify-content:center;margin-top:22px}
+.logo-tron{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:50%;
+  background:var(--card-glass);border:1px solid var(--line);
+  color:var(--muted);text-decoration:none;font-size:.8rem;font-weight:500;
+  box-shadow:0 4px 14px rgba(205,90,135,.10);
+  transition:transform .25s ease, border-color .25s ease, color .25s ease;
+}
+.logo-tron:hover{transform:translateY(-2px);border-color:var(--rose);color:var(--rose-deep)}
+/* biểu tượng tô bằng màu chữ của nút nên tự đổi màu theo chế độ sáng tối */
+.logo-tron::before{
+  content:"";width:24px;height:20px;background:currentColor;
+  -webkit-mask:var(--logo) center/contain no-repeat;mask:var(--logo) center/contain no-repeat;
+}
+.logo-tron img,.logo-tron span{display:none}
+.logo-tron.khong-logo{width:auto;padding:0 16px;border-radius:999px}
+.logo-tron.khong-logo::before{display:none}
+.logo-tron.khong-logo span{display:inline}
+/* màn hình máy tính thấp (laptop 768px): ảnh nhỏ lại chút để cả cổng vừa một màn */
+@media (min-width:601px) and (max-height:860px){
+  .gate{padding-top:28px;padding-bottom:28px}
+  .hero-art{width:220px;margin-top:22px}
+}
 
 /* ════════════════════ 4. THANH ĐẦU VÀ NÚT SÁNG TỐI ════════════════════ */
 .garden{position:relative;z-index:1}
@@ -174,26 +208,21 @@ h1{
 .back{font-size:.84rem;font-weight:500;color:var(--rose-deep);text-decoration:none;white-space:nowrap;transition:color .2s ease}
 .back:hover{color:#a23260}
 
+/* nút bật/tắt chế độ Trăng Máu: một nút duy nhất, thả nổi góc dưới trái ở mọi màn */
 .theme-toggle{
-  display:flex;align-items:center;justify-content:center;
-  width:44px;height:44px;border-radius:50%;cursor:pointer;
-  background:transparent;border:1px solid var(--line);color:var(--head);
-  font-size:1.2rem;transition:all .3s ease;
-}
-.theme-toggle:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-2px);box-shadow:0 4px 12px rgba(230,28,77,.2)}
-/* nút thả nổi góc dưới trái trong vườn */
-.theme-toggle.float{
   position:fixed;left:18px;bottom:18px;z-index:30;
-  width:46px;height:46px;
-  background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  width:46px;height:46px;border-radius:50%;cursor:pointer;
+  background:var(--card);border:1px solid var(--line);color:var(--head);
+  font-size:1.2rem;transition:all .3s ease;
   box-shadow:0 8px 22px rgba(120,40,80,.22);
 }
+.theme-toggle:hover{border-color:var(--rose);color:var(--rose);transform:translateY(-2px)}
 
-/* ════════════════════ 5. DANH SÁCH: TIÊU ĐỀ, TÌM, LỌC, ĐẾM ════════════════════ */
+/* ════════════════════ 5. DANH SÁCH: TIÊU ĐỀ, TÌM, LỌC, ĐẾM, SẮP XẾP ════════════════════ */
 .section{padding-top:74px;padding-bottom:74px}
 .sec-head{text-align:center;margin-bottom:38px}
 h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem,5vw,2.7rem);color:var(--head);margin:12px 0 8px}
-.sec-sub{color:var(--muted);font-size:.97rem}
 
 /* [TÌM KIẾM] ô tìm chồng */
 .tim-hop{
@@ -260,6 +289,20 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
   transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 .bxh-open:hover{transform:translateY(-2px);background:#ffe9f1;box-shadow:0 8px 20px rgba(224,100,147,.25)}
+
+/* [SẮP XẾP] thanh sắp xếp ngay trên lưới thẻ */
+.sap-xep{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 10px;margin:-18px 0 24px}
+.sap-nhan{font-size:.78rem;color:var(--muted)}
+.sap-hop{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--card-glass);border:1px solid var(--line)}
+.sap-nut{
+  font-family:inherit;font-size:.8rem;font-weight:500;line-height:1.4;cursor:pointer;
+  padding:6px 14px;border-radius:999px;border:none;background:transparent;color:var(--rose-deep);
+  transition:background .2s ease, color .2s ease;
+}
+.sap-nut:hover{background:rgba(224,100,147,.1)}
+.sap-nut.on{background:linear-gradient(120deg,#ef87ab,#df5e90);color:#fff;cursor:default}
+.sap-tt{font-size:.76rem;color:var(--muted)}
+.sap-tt:empty{display:none}
 
 /* ════════════════════ 6. THẺ CHỒNG ════════════════════ */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(272px,1fr));gap:20px}
@@ -354,6 +397,15 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .hook{font-size:.93rem}
 .lore{display:none}
 
+/* nhãn "Mới" góc trên thẻ, tự bật tắt theo data-ngay */
+.nhan-moi{
+  position:absolute;top:12px;left:12px;z-index:2;pointer-events:none;
+  font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1;
+  padding:6px 11px;border-radius:999px;color:#fff;
+  background:linear-gradient(120deg,#ef87ab,#df5e90);
+  box-shadow:0 4px 12px rgba(205,90,135,.35);
+}
+
 /* ════════════════════ 7. TRANG RIÊNG TỪNG CHỒNG ════════════════════ */
 .trang-chong{padding-top:38px;padding-bottom:84px;animation:fadeIn .35s ease}
 .tc-dau{display:flex;gap:34px;align-items:flex-start}
@@ -372,6 +424,7 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 }
 .tc-thong-tin .tags{margin-bottom:18px}
 .tc-thong-tin .tag{font-size:.7rem;padding:5px 12px}
+.tag.tag-moi{background:linear-gradient(120deg,#ef87ab,#df5e90);border-color:transparent;color:#fff}
 .tc-so{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
 .tc-luot{font-size:.84rem;color:var(--rose-deep)}
 .tc-links{display:flex;flex-wrap:wrap;gap:10px}
@@ -393,6 +446,8 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 }
 .tc-fb:hover{background:#ffe3ef;border-color:var(--rose)}
 .tc-nen{margin-top:14px;font-size:.76rem;color:var(--muted)}
+.tc-ngay{margin-top:4px;font-size:.76rem;color:var(--muted)}
+.tc-ngay:empty{display:none}
 .tc-khung{
   margin-top:30px;padding:26px 28px;
   background:var(--card-glass);border:1px solid var(--line);border-radius:22px;
@@ -468,7 +523,6 @@ h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.9rem
 .rank-anh{width:40px;height:40px;border-radius:50%;object-fit:cover;object-position:center 20%;flex:0 0 auto;border:1px solid var(--line)}
 .rank-name{flex:1;font-weight:500;color:var(--head);font-size:.96rem;line-height:1.3}
 .rank-score{font-weight:600;color:var(--rose-deep);font-size:.95rem;white-space:nowrap}
-.bxh-loading{text-align:center;color:var(--muted);font-size:.9rem;padding:24px 0}
 
 /* ════════════════════ 10. SỔ LƯU BÚT VÀ REVIEW ════════════════════ */
 .review-box{max-width:520px;overflow-y:auto}
@@ -575,7 +629,6 @@ textarea.review-in{resize:vertical;line-height:1.55}
   --head:#ff9eb4;
   --ink:#d6b3bd;
   --muted:#a87b88;
-  --green:#a8c98b;
 }
 [data-theme="dark"] body{
   background-color:#150c10;
@@ -594,7 +647,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
 [data-theme="dark"] .btn{background:var(--card)}
 [data-theme="dark"] .btn-primary{background:linear-gradient(120deg,#ef4d6e,#c0143a);box-shadow:0 8px 24px rgba(192,20,58,.4)}
 [data-theme="dark"] .topbar{background:rgba(21,12,16,.85)}
-[data-theme="dark"] .theme-toggle.float{background:#221016;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+[data-theme="dark"] .theme-toggle{box-shadow:0 8px 22px rgba(0,0,0,.45)}
 [data-theme="dark"] .chip{background:var(--card)}
 [data-theme="dark"] .chip.on{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
 [data-theme="dark"] .bxh-open{background:transparent}
@@ -628,6 +681,11 @@ textarea.review-in{resize:vertical;line-height:1.55}
 [data-theme="dark"] .review-send{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
 [data-theme="dark"] .tuoi-box{border-color:rgba(255,106,134,.3)}
 [data-theme="dark"] .tuoi-title{color:#ff6a86;background:rgba(255,106,134,.1);border-color:rgba(255,106,134,.28)}
+[data-theme="dark"] .nhan-moi,
+[data-theme="dark"] .tag.tag-moi,
+[data-theme="dark"] .sap-nut.on{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
+[data-theme="dark"] .nhan-moi{box-shadow:0 4px 12px rgba(0,0,0,.45)}
+[data-theme="dark"] .logo-tron{box-shadow:0 4px 14px rgba(0,0,0,.35)}
 
 /* ════════════════════ 15. ĐIỆN THOẠI ════════════════════ */
 @media (max-width:700px){
@@ -642,7 +700,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
   /* [NỀN CARO] cỡ ô caro trên điện thoại */
   body{background-size:auto, auto, 72px 71px}
   [data-theme="dark"] body{background-size:auto, auto, auto, auto, 72px 71px}
-  .theme-toggle.float{left:14px;bottom:14px}
+  .theme-toggle{left:14px;bottom:14px}
   /* thẻ nằm ngang: ảnh bên trái, chữ bên phải, cho danh sách đỡ dài */
   .card:not(.soon){flex-direction:row}
   .card-anh{flex:0 0 108px;aspect-ratio:auto;min-height:150px;border-bottom:0;border-right:1px solid var(--line)}
@@ -650,6 +708,7 @@ textarea.review-in{resize:vertical;line-height:1.55}
   .card h3{font-size:1.34rem}
   .card .tag{font-size:.6rem;padding:3px 9px}
   .card .phoi .seal{width:64%}
+  .nhan-moi{top:8px;left:8px;font-size:.58rem;padding:5px 9px}
   /* hàng nút chuyển chồng xếp dọc */
   .tc-ke{flex-direction:column;align-items:stretch}
   .tc-ke a{justify-content:center;text-align:center}
@@ -660,42 +719,9 @@ textarea.review-in{resize:vertical;line-height:1.55}
 @media (prefers-reduced-motion: reduce){
   .drops{display:none}
   .js .reveal{opacity:1;transform:none;transition:none}
-  .card,.btn,.chip,.fav,.card-anh img,.tc-links .visit{transition:none}
+  .card,.btn,.chip,.fav,.card-anh img,.tc-links .visit,.logo-tron,.sap-nut{transition:none}
   .modal,.modal-box,.tuoi-overlay,.tuoi-box,.trang-chong{animation:none}
 }
-/* ════════════════════ [NHÃN MỚI] + [SẮP XẾP] ════════════════════ */
-.nhan-moi{
-  position:absolute;top:12px;left:12px;z-index:2;pointer-events:none;
-  font-size:.66rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;line-height:1;
-  padding:6px 11px;border-radius:999px;color:#fff;
-  background:linear-gradient(120deg,#ef87ab,#df5e90);
-  box-shadow:0 4px 12px rgba(205,90,135,.35);
-}
-.tag.tag-moi{background:linear-gradient(120deg,#ef87ab,#df5e90);border-color:transparent;color:#fff}
-.tc-ngay{margin-top:4px;font-size:.76rem;color:var(--muted)}
-.tc-ngay:empty{display:none}
-
-.sap-xep{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 10px;margin:-18px 0 24px}
-.sap-nhan{font-size:.78rem;color:var(--muted)}
-.sap-hop{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--card-glass);border:1px solid var(--line)}
-.sap-nut{
-  font-family:inherit;font-size:.8rem;font-weight:500;line-height:1.4;cursor:pointer;
-  padding:6px 14px;border-radius:999px;border:none;background:transparent;color:var(--rose-deep);
-  transition:background .2s ease, color .2s ease;
-}
-.sap-nut:hover{background:rgba(224,100,147,.1)}
-.sap-nut.on{background:linear-gradient(120deg,#ef87ab,#df5e90);color:#fff;cursor:default}
-.sap-tt{font-size:.76rem;color:var(--muted)}
-.sap-tt:empty{display:none}
-
-[data-theme="dark"] .nhan-moi,
-[data-theme="dark"] .tag.tag-moi,
-[data-theme="dark"] .sap-nut.on{background:linear-gradient(120deg,#ef4d6e,#c0143a)}
-[data-theme="dark"] .nhan-moi{box-shadow:0 4px 12px rgba(0,0,0,.45)}
-
-@media (max-width:600px){
-  .nhan-moi{top:8px;left:8px;font-size:.58rem;padding:5px 9px}
-}  
 </style>
 <script>
 document.documentElement.classList.add('js');
@@ -726,18 +752,28 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
 
   <!-- [ẢNH] ảnh thương hiệu: nhớ upload kèm file sherry-cherry.png cùng thư mục -->
   <div class="hero-art reveal">
-    <img src="sherry-cherry.png" alt="Sherry Cherry, chiếc nơ hồng và đôi quả anh đào" onerror="this.parentElement.style.display='none'">
+    <img src="sherry-cherry.png" alt="Sherry Cherry, chiếc nơ hồng và đôi quả anh đào" fetchpriority="high" onerror="this.parentElement.style.display='none'">
   </div>
 
   <div class="cta reveal">
     <a class="btn btn-primary" href="#garden">Dạo vườn 🍒</a>
-    <!-- [LINK FACEBOOK] -->
-    <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Facebook</a>
-    <!-- [LINK DISCORD] dán link mời Discord vào href bên dưới -->
-    <a class="btn" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener">Discord</a>    <button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
   </div>
 
   <p class="gate-hint reveal">bước qua cổng để gặp chồng iu</p>
+
+  <!-- logo tròn Facebook, Discord: biểu tượng lấy từ bộ Font Awesome miễn phí, tải lỗi thì tự hiện chữ -->
+  <div class="mang-xh reveal">
+    <!-- [LINK FACEBOOK] -->
+    <a class="logo-tron fb" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook"
+       style="--logo:url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/brands/facebook-f.svg)">
+      <img src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/brands/facebook-f.svg" alt="" onerror="this.parentNode.classList.add('khong-logo')"><span>Facebook</span>
+    </a>
+    <!-- [LINK DISCORD] dán link mời Discord vào href bên dưới -->
+    <a class="logo-tron dc" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener" title="Discord" aria-label="Discord"
+       style="--logo:url(https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/brands/discord.svg)">
+      <img src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/brands/discord.svg" alt="" onerror="this.parentNode.classList.add('khong-logo')"><span>Discord</span>
+    </a>
+  </div>
 </header>
 
 <!-- ═════════════════════ MÀN 2: TRONG VƯỜN ═════════════════════ -->
@@ -750,19 +786,22 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
     </div>
   </nav>
 
-  <!-- nút bật/tắt dark mode, thả nổi góc dưới trái (đặt ngoài topbar để ghim đúng theo màn hình) -->
-  <button class="theme-toggle float" type="button" title="Bật chế độ Trăng Máu">🌙</button>
-
   <!-- ───────────── DANH SÁCH CHỒNG ───────────── -->
   <main id="danhSach">
-  <section class="section wrap" id="bots">
+  <section class="section wrap">
     <div class="sec-head reveal">
       <p class="overline">Cherry đã chín, mời em chọn quả</p>
       <h2>Chồng iu trong vườn</h2>
-      <p class="sec-sub"></p>
     </div>
 
-    <!-- [BỘ LỌC] ô tìm kiếm và các nút lọc tự sinh ở đây, không cần sửa gì -->
+    <!-- [TÌM KIẾM] ô tìm chồng: gõ không dấu vẫn ra, tìm cả trong lore -->
+    <div class="tim-hop">
+      <span class="tim-icon">🔍</span>
+      <input class="tim-o" id="timO" type="search" autocomplete="off" placeholder="Tìm chồng theo tên, tag hay nội dung..." aria-label="Tìm chồng">
+      <button class="tim-xoa" id="timXoa" type="button" title="Xoá">✕</button>
+    </div>
+
+    <!-- [BỘ LỌC] các nút lọc tự sinh từ tag của các thẻ, không cần sửa gì -->
     <div class="filter reveal" id="filter" role="group" aria-label="Lọc chồng theo tag"></div>
 
     <!-- [ĐẾM BOT] dòng đếm tự động -->
@@ -773,21 +812,31 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
       <button class="bxh-open" type="button" id="reviewOpen">💌 Sổ lưu bút &amp; review</button>
     </div>
 
+    <!-- [SẮP XẾP] -->
+    <div class="sap-xep reveal" id="sapXep" role="group" aria-label="Sắp xếp danh sách chồng">
+      <span class="sap-nhan">Sắp xếp</span>
+      <span class="sap-hop">
+        <button class="sap-nut on" type="button" data-che="moi" aria-pressed="true">Mới nhất</button>
+        <button class="sap-nut" type="button" data-che="tym" aria-pressed="false">Nhiều tym</button>
+      </span>
+      <span class="sap-tt" aria-live="polite"></span>
+    </div>
+
     <div class="grid" id="grid">
 
-      <!-- ─── Bot 28: Lâm Đức Duy ─── -->      
+      <!-- ─── Bot 28: Lâm Đức Duy ─── -->
       <article class="card reveal" data-21 data-bot="lamducduy" data-chu="D" data-img="" data-ngay="14/11/2026"
         data-fb="https://www.facebook.com/share/p/1KBQMXC51a/"
         data-link="https://aistudio.google.com/u/0/prompts/1oMs3_fR4_wNPRxe2LkV1vDR7AzyBMybS" data-link-label="Bản BG"
-        data-link2="https://aistudio.google.com/u/0/prompts/1qody2Oy3cbP0n7JvwWcKwuxjKm8wRSCf" data-link2-label="Bản BL">        
+        data-link2="https://aistudio.google.com/u/0/prompts/1qody2Oy3cbP0n7JvwWcKwuxjKm8wRSCf" data-link2-label="Bản BL">
         <div class="tags">
           <span class="tag">Hiện đại</span>
           <span class="tag">Việt Nam</span>
           <span class="tag">Đời thường</span>
-          <span class="tag">TXVT</span>  
-          <span class="tag">Ngọt</span>                    
-          <span class="tag">BG</span>          
-          <span class="tag">BL</span>                    
+          <span class="tag">TXVT</span>
+          <span class="tag">Ngọt</span>
+          <span class="tag">BG</span>
+          <span class="tag">BL</span>
           <span class="tag adult">18+</span>
         </div>
         <h3>Lâm Đức Duy</h3>
@@ -797,7 +846,7 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
           <p>Chỉ có điều, sự chung thủy của Duy lại đi kèm với cái đầu gỗ vô tri trước chuyện ranh giới. Quanh cậu luôn có Thảo Sương, cô bạn nối khố học chung từ thuở lớp một ở quê lên tới đại học. Tin chắc hai đứa trong sáng như hai thằng con trai, Duy vô tư để Sương mượn áo khoác, cầm điện thoại hay gọi nhờ vả đêm khuya mà không hiểu điều đó làm người yêu tổn thương. Mâu thuẫn âm ỉ ấy chạm đỉnh điểm vào một đêm thứ Sáu gió chướng, khi Duy quá chén quên cả giờ hẹn về và điện thoại cậu gửi tới bạn tin nhắn báo rằng tối nay sẽ qua phòng Sương ngủ lại.</p>
         </div>
       </article>
-      
+
       <!-- ─── Bot 27: Kwon Do-heon ─── -->      
       <article class="card reveal" data-21 data-bot="kwondoheon" data-chu="K" data-img="" data-ngay="08/11/2026"
         data-fb="https://www.facebook.com/share/p/19aGnxHAxA/"
@@ -807,7 +856,6 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
           <span class="tag">Hàn Quốc</span>
           <span class="tag">Trả thù</span>
           <span class="tag">NTR</span>          
-          <span class="tag">BG</span>                    
           <span class="tag adult">21+</span>
         </div>
         <h3>Kwon Do-heon</h3>
@@ -830,7 +878,7 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
           <span class="tag">NTR</span>          
           <span class="tag adult">21+</span>
         </div>
-        <h3>【 non human 】</h3>
+        <h3>【 Người Về Từ Vực Sâu 】</h3>
         <div class="lore" hidden>
           <p>Dưới đáy sông Ngần sâu thẳm trong hang Trăng Chìm, có một khối sống cổ xưa lạnh lẽo, vô tri và không mang hình hài. Mọi chuyện chỉ thay đổi khi Thẩm Tri Quy, chồng của bạn, gặp nạn và trút hơi thở cuối cùng trong dòng nước lạnh. Khối sống ấy đã vươn lên bao bọc lấy cái xác, tiêu hóa anh từ trong ra ngoài và đọc được trọn vẹn ký ức của người đàn ông xấu số.</p>
           <p>Trong cuốn sách ký ức của người chết, khối sống nhìn thấy bạn. Nó thấy một người vợ mòn mỏi chờ đợi một người chồng đã lãng quên mình từ lâu. Từ những mảnh ký ức lạnh nhạt ấy, thứ dưới đáy sông lần đầu tiên nảy sinh ý thức cá nhân và một sự khao khát mãnh liệt. Nó tự nặn mình thành đúng hình dáng của Thẩm Tri Quy, bước ra khỏi cửa hang ngập nước để trở về nhà, không phải để sống tiếp cuộc đời của anh ta, mà là để giành lấy bạn.</p>
@@ -1395,6 +1443,7 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
       </article>
 
     </div>
+    <p class="tim-trong" id="timTrong">Không tìm thấy chồng nào hợp ý 🍒</p>
   </section>
 
   <!-- ───────────── GIỚI THIỆU ───────────── -->
@@ -1422,6 +1471,7 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
         <div class="tc-links" id="tcLinks"></div>
         <div id="tcFb"></div>
         <p class="tc-nen" id="tcNen"></p>
+        <p class="tc-ngay" id="tcNgay"></p>
       </div>
     </div>
 
@@ -1452,57 +1502,59 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
       <!-- [LINK FACEBOOK] -->
       <a class="btn" href="https://www.facebook.com/profile.php?id=61582234705602" target="_blank" rel="noopener">Theo dõi trên Facebook</a>
       <!-- [LINK DISCORD] dán link mời Discord vào href bên dưới -->
-      <a class="btn" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener">Tham gia Discord 🍒</a>      <p class="foot-note">Mọi nhân vật trong vườn đều là hư cấu · Nội dung dành cho người dùng 18+</p>
+      <a class="btn" href="https://discord.gg/nmnHydch33" target="_blank" rel="noopener">Tham gia Discord 🍒</a>
+      <p class="foot-note">Mọi nhân vật trong vườn đều là hư cấu · Nội dung dành cho người dùng 18+</p>
       <!-- [ĐẾM KHÁCH] dòng đếm tự động -->
       <p class="visit-count" id="visitCount"></p>
       <p class="foot-copy">© 2026 Vườn Anh Đào của Sherry</p>
     </div>
   </footer>
 
-  <!-- khung BẢNG XẾP HẠNG -->
-  <div class="modal is-hidden" id="bxhOverlay">
-    <div class="modal-box bxh-box" role="dialog" aria-modal="true" aria-label="Bảng xếp hạng">
-      <button class="modal-close" type="button" aria-label="Đóng">✕</button>
-      <div class="bxh-head">
-        <h3>🏆 Bảng xếp hạng chồng</h3>
-        <div class="bxh-tabs">
-          <button class="bxh-tab on" type="button" data-tab="tym">💗 Top chồng iu</button>
-          <button class="bxh-tab" type="button" data-tab="click">🍽️ Top mukbang</button>
-        </div>
-        <p class="bxh-note" id="bxhNote"></p>
-      </div>
-      <div class="bxh-body" id="bxhBody"></div>
-    </div>
-  </div>
-
-  <!-- khung SỔ LƯU BÚT & REVIEW -->
-  <div class="modal is-hidden" id="reviewOverlay">
-    <div class="modal-box review-box" role="dialog" aria-modal="true" aria-label="Sổ lưu bút và review">
-      <button class="modal-close" type="button" aria-label="Đóng">✕</button>
-      <div class="review-head">
-        <h3>💌 Sổ lưu bút của vườn</h3>
-        <p class="review-sub">Để lại vài dòng cho Sherry, hoặc review một chồng nào đó.</p>
-      </div>
-      <div class="review-form">
-        <label class="review-l" for="reviewTo">Gửi cho</label>
-        <select class="review-in" id="reviewTo"></select>
-        <label class="review-l" for="reviewMsg">Lời nhắn</label>
-        <textarea class="review-in" id="reviewMsg" rows="3" maxlength="600" placeholder="..."></textarea>
-        <label class="review-l" for="reviewName">Tên của bạn <span class="review-opt">(để trống = ẩn danh)</span></label>
-        <input class="review-in" id="reviewName" type="text" maxlength="40" placeholder="Ẩn danh">
-        <input class="review-hp" id="reviewHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <button class="review-send" type="button" id="reviewSend">Gửi vào vườn 🍒</button>
-        <p class="review-msg" id="reviewFormMsg"></p>
-      </div>
-      <div class="review-list-head">
-        <span>Mọi người đã viết</span>
-        <select class="review-filter" id="reviewFilter" aria-label="Lọc lời nhắn"></select>
-      </div>
-      <div class="review-list" id="reviewList"></div>
-    </div>
-  </div>
-
 </div><!-- /trong vườn -->
+
+<!-- ───────────── KHUNG NỔI: đặt ngoài vườn để phủ lên cả nút sáng tối ───────────── -->
+<!-- khung BẢNG XẾP HẠNG -->
+<div class="modal is-hidden" id="bxhOverlay">
+  <div class="modal-box bxh-box" role="dialog" aria-modal="true" aria-label="Bảng xếp hạng">
+    <button class="modal-close" type="button" aria-label="Đóng">✕</button>
+    <div class="bxh-head">
+      <h3>🏆 Bảng xếp hạng chồng</h3>
+      <div class="bxh-tabs">
+        <button class="bxh-tab on" type="button" data-tab="tym">💗 Top chồng iu</button>
+        <button class="bxh-tab" type="button" data-tab="click">🍽️ Top mukbang</button>
+      </div>
+      <p class="bxh-note" id="bxhNote"></p>
+    </div>
+    <div class="bxh-body" id="bxhBody"></div>
+  </div>
+</div>
+
+<!-- khung SỔ LƯU BÚT & REVIEW -->
+<div class="modal is-hidden" id="reviewOverlay">
+  <div class="modal-box review-box" role="dialog" aria-modal="true" aria-label="Sổ lưu bút và review">
+    <button class="modal-close" type="button" aria-label="Đóng">✕</button>
+    <div class="review-head">
+      <h3>💌 Sổ lưu bút của vườn</h3>
+      <p class="review-sub">Để lại vài dòng cho Sherry, hoặc review một chồng nào đó.</p>
+    </div>
+    <div class="review-form">
+      <label class="review-l" for="reviewTo">Gửi cho</label>
+      <select class="review-in" id="reviewTo"></select>
+      <label class="review-l" for="reviewMsg">Lời nhắn</label>
+      <textarea class="review-in" id="reviewMsg" rows="3" maxlength="600" placeholder="..."></textarea>
+      <label class="review-l" for="reviewName">Tên của bạn <span class="review-opt">(để trống = ẩn danh)</span></label>
+      <input class="review-in" id="reviewName" type="text" maxlength="40" placeholder="Ẩn danh">
+      <input class="review-hp" id="reviewHp" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="review-send" type="button" id="reviewSend">Gửi vào vườn 🍒</button>
+      <p class="review-msg" id="reviewFormMsg"></p>
+    </div>
+    <div class="review-list-head">
+      <span>Mọi người đã viết</span>
+      <select class="review-filter" id="reviewFilter" aria-label="Lọc lời nhắn"></select>
+    </div>
+    <div class="review-list" id="reviewList"></div>
+  </div>
+</div>
 
 <!-- [CẢNH BÁO 21+] khung xác nhận độ tuổi, chỉ hiện với chồng có gắn data-21 -->
 <div class="tuoi-overlay is-hidden" id="tuoiGate">
@@ -1519,6 +1571,9 @@ try{ if(localStorage.getItem('sherry-theme') === 'dark') document.documentElemen
   </div>
 </div>
 
+<!-- nút bật/tắt chế độ Trăng Máu, thả nổi góc dưới trái ở mọi màn -->
+<button class="theme-toggle" type="button" title="Bật chế độ Trăng Máu">🌙</button>
+
 <script>
 /* ════════════════════════════════════════════════════════════════
    CẤU HÌNH
@@ -1533,15 +1588,17 @@ var NHO_XAC_NHAN_21 = true;
 var NEN_TANG = '✦ Google AI Studio';
 /* Mục gửi riêng cho Sherry trong sổ lưu bút. Đổi là lời nhắn cũ không lọc ra được */
 var GUI_SHERRY = '💌 Gửi Sherry';
+/* [NHÃN MỚI] chồng có data-ngay trong bao nhiêu ngày gần nhất thì mang nhãn "Mới" */
+var SO_NGAY_MOI = 30;
 
 /* ════════════════════════════════════════════════════════════════
    TIỆN ÍCH CHUNG
    ════════════════════════════════════════════════════════════════ */
 function $(id){ return document.getElementById(id); }
 function mang(ds){ return Array.prototype.slice.call(ds); }
-function esc(t){ var d = document.createElement('div'); d.textContent = (t == null ? '' : String(t)); return d.innerHTML; }
+function esc(t){ return String(t == null ? '' : t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function boDau(s){
-  return String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/đ/g, 'd').replace(/\s+/g, ' ').trim();
 }
 /* tên dùng để khớp review: bỏ phần trong [ngoặc vuông], gộp khoảng trắng thừa */
@@ -1551,6 +1608,19 @@ function chuanTen(s){
 }
 function docKho(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function ghiKho(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+/* đọc ngày dạng 25/10/2026 (hoặc 2026-10-25); sai dạng thì trả về null */
+function docNgay(s){
+  s = String(s || '').trim();
+  var m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/.exec(s), y, mo, d;
+  if(m){ d = +m[1]; mo = +m[2]; y = +m[3]; }
+  else if((m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s))){ y = +m[1]; mo = +m[2]; d = +m[3]; }
+  else return null;
+  var t = new Date(y, mo - 1, d);
+  return (t.getFullYear() === y && t.getMonth() === mo - 1 && t.getDate() === d) ? t : null;
+}
+function inNgay(t){
+  return ('0' + t.getDate()).slice(-2) + '/' + ('0' + (t.getMonth() + 1)).slice(-2) + '/' + t.getFullYear();
+}
 function quaCherry(chu){
   return '<svg class="seal" viewBox="0 0 64 64" aria-hidden="true">' +
     '<path d="M33 17 C 31 9, 37 5, 43 3" stroke="#a8c98b" stroke-width="3.6" fill="none" stroke-linecap="round"/>' +
@@ -1644,62 +1714,92 @@ var Khung = (function(){
 
 /* ════════════════════════════════════════════════════════════════
    BỘ ĐẾM ABACUS: tym, lượt ghé từng chồng, lượt khách
-   Abacus cho tối đa 30 lệnh mỗi 10 giây trên một mạng. Khối này giữ dưới 25 lệnh,
-   cho việc gấp (lượt khách, trang chồng đang mở, bấm tym) đi trước,
-   lỗi thì tự hỏi lại, và nhớ số trong phiên để không bao giờ hiện số 0 sai.
+   · Số lấy được lần trước lưu lại trên máy khách: mở trang là hiện số ngay, số mới về thì tự thay.
+   · Abacus cho tối đa 30 lệnh mỗi 10 giây trên một mạng. Khối này giữ dưới 25 lệnh;
+     việc nền (đếm tym cả vườn, bảng xếp hạng) chỉ dùng tới 20, chừa chỗ để việc gấp
+     (bấm tym, trang chồng đang mở, lượt khách) luôn chạy ngay.
+   · Số nào vừa hỏi trong 5 phút thì không hỏi lại, đang hỏi thì không hỏi trùng.
+   · Lỗi mạng thì tự hỏi lại, không bao giờ hiện số 0 sai.
    ════════════════════════════════════════════════════════════════ */
 var Dem = (function(){
-  var API = 'https://abacus.jasoncameron.dev';
-  var TOI_DA = 25, CUA_SO = 10000, CUNG_LUC = 6, LUU = 'sherry-so-dem';
-  var hang = [], dangChay = 0, moc = [], hen = null, nho = {};
-  try { nho = JSON.parse(sessionStorage.getItem(LUU) || '{}') || {}; } catch(e){ nho = {}; }
-  function ghiNho(){ try { sessionStorage.setItem(LUU, JSON.stringify(nho)); } catch(e){} }
+  var API = 'https://abacus.jasoncameron.dev', LUU = 'sherry-dem';
+  /* CUA_SO tính dư nửa giây cho chắc, phòng mạng chậm làm lệnh tới máy chủ dồn lại */
+  var TOI_DA = 25, TOI_DA_NEN = 20, CUA_SO = 10500, CUNG_LUC = 6, TUOI = 300000, CHO_TOI_DA = 10000;
+  var hang = [], dangChay = 0, moc = [], hen = null;
+  var nho = {}, lucLay = {}, lucCong = {}, dangHoi = {};
+  try { nho = JSON.parse(localStorage.getItem(LUU)) || {}; } catch(e){}
 
   function chay(){
     var bayGio = Date.now();
-    moc = moc.filter(function(t){ return bayGio - t < CUA_SO; });
-    while(hang.length && dangChay < CUNG_LUC && moc.length < TOI_DA){
-      var viec = hang.shift();
+    while(moc.length && bayGio - moc[0] >= CUA_SO) moc.shift();
+    while(hang.length && dangChay < CUNG_LUC && moc.length < (hang[0].gap ? TOI_DA : TOI_DA_NEN)){
       dangChay++;
       moc.push(bayGio);
-      viec(function(){ dangChay--; chay(); });
+      hang.shift().chay();
     }
-    if(hang.length && moc.length >= TOI_DA && !hen){
+    if(hang.length && dangChay < CUNG_LUC && !hen){
       hen = setTimeout(function(){ hen = null; chay(); }, CUA_SO - (bayGio - moc[0]) + 30);
     }
   }
-  function goi(duong, conThu, gap){
+  /* xếp một lệnh vào hàng; 404 nghĩa là số đó chưa ai bấm, tức là 0 */
+  function goi(duong, conThu, phieu){
     return new Promise(function(xong){
-      var viec = function(ketThuc){
-        fetch(API + '/' + duong).then(function(r){
-          if(r.status === 404) return { value: 0 };          /* chưa ai bấm: đúng là 0 */
-          if(!r.ok) throw new Error('HTTP ' + r.status);     /* quá tải hoặc lỗi mạng */
+      var viec = { gap: phieu.gap, chay: function(){
+        var ngat = window.AbortController ? new AbortController() : null;
+        var hgio = ngat && setTimeout(function(){ ngat.abort(); }, CHO_TOI_DA);
+        function xongViec(){ clearTimeout(hgio); dangChay--; chay(); }
+        fetch(API + '/' + duong, ngat ? { signal: ngat.signal } : {}).then(function(r){
+          if(r.status === 404) return { value: 0 };
+          if(!r.ok) throw new Error('HTTP ' + r.status);
           return r.json();
-        }).then(function(d){ ketThuc(); xong(d); }, function(){
-          ketThuc();
-          if(conThu > 0) setTimeout(function(){ goi(duong, conThu - 1, gap).then(xong); }, 1200);
+        }).then(function(d){ xongViec(); xong(d); }, function(){
+          xongViec();
+          if(conThu > 0) setTimeout(function(){ goi(duong, conThu - 1, phieu).then(xong); }, 1200);
           else xong(null);
         });
-      };
-      if(gap) hang.unshift(viec); else hang.push(viec);
+      }};
+      phieu.viec = viec;
+      if(viec.gap) hang.unshift(viec); else hang.push(viec);
       chay();
     });
   }
   function chot(khoa, d){
-    if(d && typeof d.value === 'number'){ nho[khoa] = d.value; ghiNho(); return d.value; }
-    return null;
+    if(!d || typeof d.value !== 'number') return null;
+    nho[khoa] = d.value;
+    lucLay[khoa] = Date.now();
+    ghiKho(LUU, JSON.stringify(nho));
+    return d.value;
   }
-  return {
-    soCu: function(khoa){ return (khoa in nho) ? nho[khoa] : null; },
-    lay: function(khoa, gap){
-      return goi('get/' + NGAN_DEM + '/' + khoa, 2, gap).then(function(d){
-        var v = chot(khoa, d);
-        return v !== null ? v : ((khoa in nho) ? nho[khoa] : null);
-      });
-    },
-    /* cộng thì không tự hỏi lại, tránh cộng hai lần */
-    cong: function(khoa){ return goi('hit/' + NGAN_DEM + '/' + khoa, 0, true).then(function(d){ return chot(khoa, d); }); }
-  };
+  function soCu(khoa){ return typeof nho[khoa] === 'number' ? nho[khoa] : null; }
+  function moi(khoa){ return Date.now() - (lucLay[khoa] || 0) < TUOI; }
+  /* lấy số mới nhất; gap = true khi người xem đang chờ số này trên màn hình */
+  function lay(khoa, gap){
+    if(moi(khoa)) return Promise.resolve(nho[khoa]);
+    var p = dangHoi[khoa];
+    if(p){
+      if(gap && !p.gap){
+        p.gap = p.viec.gap = true;
+        var i = hang.indexOf(p.viec);
+        if(i >= 0){ hang.splice(i, 1); hang.unshift(p.viec); chay(); }
+      }
+      return p.hua;
+    }
+    var luc = Date.now();
+    p = dangHoi[khoa] = { gap: !!gap };
+    p.hua = goi('get/' + NGAN_DEM + '/' + khoa, 2, p).then(function(d){
+      delete dangHoi[khoa];
+      /* có người vừa bấm cộng sau lúc hỏi thì số hỏi được đã cũ, bỏ qua */
+      if((lucCong[khoa] || 0) < luc) chot(khoa, d);
+      return soCu(khoa);
+    });
+    return p.hua;
+  }
+  /* cộng 1; không tự hỏi lại để tránh cộng hai lần */
+  function cong(khoa){
+    lucCong[khoa] = Date.now();
+    return goi('hit/' + NGAN_DEM + '/' + khoa, 0, { gap: true }).then(function(d){ return chot(khoa, d); });
+  }
+  return { soCu: soCu, moi: moi, lay: lay, cong: cong };
 })();
 
 /* ════════════════════════════════════════════════════════════════
@@ -1710,6 +1810,7 @@ var Tym = (function(){
   function daTym(k){ return !!docKho('sherry-tym-' + k); }
   function ve(k){
     var so = Dem.soCu(k), on = daTym(k) || !!dangGui[k];
+    if(so !== null && dangGui[k]) so++;          /* vừa bấm thì hiện cộng 1 luôn, khỏi chờ mạng */
     nut[k] = (nut[k] || []).filter(function(b){ return document.body.contains(b); });
     nut[k].forEach(function(b){
       b.querySelector('.fav-n').textContent = (so === null) ? '…' : so;
@@ -1741,7 +1842,9 @@ var Tym = (function(){
    DỮ LIỆU CHỒNG: đọc từ các khối <article> trong vườn
    ════════════════════════════════════════════════════════════════ */
 var DuLieu = (function(){
-  var ds = [], theoKhoa = {};
+  var ds = [], theoKhoa = {}, tatCaTag = [];
+  var homNay = new Date();
+  homNay.setHours(0, 0, 0, 0);
   mang(document.querySelectorAll('#grid .card:not(.soon)')).forEach(function(the){
     var k = (the.getAttribute('data-bot') || '').trim();
     if(!k || theoKhoa[k]) return;
@@ -1750,6 +1853,8 @@ var DuLieu = (function(){
     var tags = mang(the.querySelectorAll('.tag')).map(function(t){
       return { chu: t.textContent.trim(), nguoiLon: t.classList.contains('adult') };
     });
+    var tenTag = tags.map(function(t){ return t.chu; });
+    tags.forEach(function(t){ if(!t.nguoiLon && tatCaTag.indexOf(t.chu) < 0) tatCaTag.push(t.chu); });
     var links = [];
     [['data-link', 'data-link-label', 'Gặp chồng liền'], ['data-link2', 'data-link2-label', 'Bản 2']].forEach(function(a){
       var url = (the.getAttribute(a[0]) || '').trim();
@@ -1757,25 +1862,29 @@ var DuLieu = (function(){
     });
     var mau = 0;
     for(var i = 0; i < k.length; i++) mau = (mau * 31 + k.charCodeAt(i)) % 9973;
+    var ngay = docNgay(the.getAttribute('data-ngay'));
     var c = {
       the: the, khoa: k, ten: ten, tenChuan: chuanTen(ten),
       chu: the.hasAttribute('data-chu') ? the.getAttribute('data-chu') : chuanTen(ten).charAt(0),
       anh: (the.getAttribute('data-img') || '').trim(),
       mau: mau % 5,
       tags: tags,
-      tenTag: tags.map(function(t){ return t.chu; }),
+      tenTag: tenTag,
       links: links,
       fb: (the.getAttribute('data-fb') || '').trim(),
       la21: the.hasAttribute('data-21'),
       khoaLuot: 'click-' + ((the.getAttribute('data-clickkey') || '').trim() || k),
       nenTang: the.getAttribute('data-platform') || NEN_TANG,
       loreHTML: lore ? lore.innerHTML.trim() : '',
-      timKiem: boDau(ten + ' ' + tags.map(function(t){ return t.chu; }).join(' ') + ' ' + (lore ? lore.textContent : ''))
+      timKiem: boDau(ten + ' ' + tenTag.join(' ') + ' ' + (lore ? lore.textContent : '')),
+      viTri: ds.length,
+      ngay: ngay,
+      moi: !!ngay && (homNay - ngay) / 86400000 < SO_NGAY_MOI
     };
     ds.push(c);
     theoKhoa[k] = c;
   });
-  return { ds: ds, tim: function(k){ return theoKhoa[k] || null; } };
+  return { ds: ds, tags: tatCaTag, tim: function(k){ return theoKhoa[k] || null; } };
 })();
 
 /* khung ảnh của chồng; chưa có ảnh (hoặc ảnh lỗi) thì hiện quả cherry */
@@ -1801,36 +1910,56 @@ function khungAnh(c, lop, taiCham){
 }
 
 /* ════════════════════════════════════════════════════════════════
-   THẺ CHỒNG: gắn ảnh, link trang riêng, nút tym; đếm số chồng
-   Số tym của thẻ nào chỉ lấy khi thẻ đó sắp hiện trên màn hình.
+   THỨ TỰ CHỒNG
+     Mới nhất: chồng đang mang nhãn Mới lên đầu (ngày gần nhất trước), còn lại giữ thứ tự trong file.
+     Nhiều tym: tym cao lên trước, bằng tym thì xếp như Mới nhất.
    ════════════════════════════════════════════════════════════════ */
-var xemThe = ('IntersectionObserver' in window) ? new IntersectionObserver(function(es){
-  es.forEach(function(e){
-    if(!e.isIntersecting) return;
-    xemThe.unobserve(e.target);
-    Tym.tai(e.target.getAttribute('data-bot'));
+function theoMoi(a, b){
+  if(a.moi !== b.moi) return a.moi ? -1 : 1;
+  if(a.moi && a.ngay - b.ngay) return b.ngay - a.ngay;
+  return a.viTri - b.viTri;
+}
+function theoTym(a, b){
+  var x = Dem.soCu(a.khoa), y = Dem.soCu(b.khoa);
+  return ((y === null ? -1 : y) - (x === null ? -1 : x)) || theoMoi(a, b);
+}
+DuLieu.ds.sort(theoMoi);
+
+/* ════════════════════════════════════════════════════════════════
+   THẺ CHỒNG: gắn ảnh, nhãn Mới, link trang riêng, nút tym; đếm số chồng
+   Ảnh của 6 thẻ đầu tải sẵn từ lúc khách còn ở cổng, thẻ sau cuộn tới mới tải.
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  var grid = $('grid'), manh = document.createDocumentFragment();
+  DuLieu.ds.forEach(function(c, i){
+    var the = c.the, tags = the.querySelector('.tags'), h3 = the.querySelector('h3');
+    var than = document.createElement('div');
+    than.className = 'card-than';
+    if(tags) than.appendChild(tags);
+    if(h3){
+      h3.innerHTML = '<a class="card-link" href="#garden/' + encodeURIComponent(c.khoa) + '">' + h3.innerHTML + '</a>';
+      than.appendChild(h3);
+    }
+    var chan = document.createElement('div');
+    chan.className = 'card-foot';
+    chan.innerHTML = '<button class="fav" type="button"><span class="heart">♥</span> <span class="fav-n">…</span></button>' +
+                     '<span class="lore-btn">Lore <span>→</span></span>';
+    than.appendChild(chan);
+    the.insertBefore(khungAnh(c, 'card-anh', i >= 6), the.firstChild);
+    the.insertBefore(than, the.querySelector('.lore'));
+    if(c.moi){
+      var n = document.createElement('span');
+      n.className = 'nhan-moi';
+      n.textContent = 'Mới';
+      the.appendChild(n);
+    }
+    Tym.gan(chan.querySelector('.fav'), c.khoa);
+    manh.appendChild(the);
   });
-}, { rootMargin: '300px 0px' }) : null;
-DuLieu.ds.forEach(function(c){
-  var the = c.the, tags = the.querySelector('.tags'), h3 = the.querySelector('h3');
-  var than = document.createElement('div');
-  than.className = 'card-than';
-  if(tags) than.appendChild(tags);
-  if(h3){
-    h3.innerHTML = '<a class="card-link" href="#garden/' + encodeURIComponent(c.khoa) + '">' + h3.innerHTML + '</a>';
-    than.appendChild(h3);
-  }
-  var chan = document.createElement('div');
-  chan.className = 'card-foot';
-  chan.innerHTML = '<button class="fav" type="button"><span class="heart">♥</span> <span class="fav-n">…</span></button>' +
-                   '<span class="lore-btn">Lore <span>→</span></span>';
-  than.appendChild(chan);
-  the.insertBefore(khungAnh(c, 'card-anh', true), the.firstChild);
-  the.insertBefore(than, the.querySelector('.lore'));
-  Tym.gan(chan.querySelector('.fav'), c.khoa);
-  if(xemThe) xemThe.observe(the); else Tym.tai(c.khoa);
-});
-$('botCount').innerHTML = 'Đang có <span class="bot-count-n">' + DuLieu.ds.length + '</span> quả cherry mọng nước 🍒';
+  mang(grid.querySelectorAll('.card.soon')).forEach(function(s){ manh.appendChild(s); });
+  grid.appendChild(manh);
+  $('botCount').innerHTML = 'Đang có <span class="bot-count-n">' + DuLieu.ds.length + '</span> quả cherry mọng nước 🍒';
+})();
 
 /* ════════════════════════════════════════════════════════════════
    TÌM KIẾM + LỌC TAG
@@ -1838,12 +1967,8 @@ $('botCount').innerHTML = 'Đang có <span class="bot-count-n">' + DuLieu.ds.len
    Đang lọc tag nào thì ô tìm kiếm chỉ tìm trong tag đó.
    ════════════════════════════════════════════════════════════════ */
 var BoLoc = (function(){
-  var grid = $('grid'), bar = $('filter'), tag = '*';
-  var choChin = mang(grid.querySelectorAll('.card.soon'));
-  var tatCaTag = [];
-  DuLieu.ds.forEach(function(c){
-    c.tags.forEach(function(t){ if(!t.nguoiLon && tatCaTag.indexOf(t.chu) < 0) tatCaTag.push(t.chu); });
-  });
+  var bar = $('filter'), o = $('timO'), xoa = $('timXoa'), trong = $('timTrong'), tag = '*';
+  var choChin = mang($('grid').querySelectorAll('.card.soon'));
   function chip(nhan, giaTri){
     var b = document.createElement('button');
     b.type = 'button';
@@ -1854,19 +1979,7 @@ var BoLoc = (function(){
     return b;
   }
   chip('Tất cả 🍒', '*').classList.add('on');
-  tatCaTag.forEach(function(t){ chip(t, t); });
-
-  var hop = document.createElement('div');
-  hop.className = 'tim-hop';
-  hop.innerHTML = '<span class="tim-icon">🔍</span>' +
-    '<input class="tim-o" type="search" autocomplete="off" placeholder="Tìm chồng theo tên, tag hay nội dung..." aria-label="Tìm chồng">' +
-    '<button class="tim-xoa" type="button" title="Xoá">✕</button>';
-  bar.parentNode.insertBefore(hop, bar);
-  var o = hop.querySelector('.tim-o'), xoa = hop.querySelector('.tim-xoa');
-  var trong = document.createElement('p');
-  trong.className = 'tim-trong';
-  trong.textContent = 'Không tìm thấy chồng nào hợp ý 🍒';
-  grid.parentNode.insertBefore(trong, grid.nextSibling);
+  DuLieu.tags.forEach(function(t){ chip(t, t); });
 
   function loc(){
     var tu = boDau(o.value), thay = 0;
@@ -1910,6 +2023,50 @@ var BoLoc = (function(){
     });
   }
   return { khiHien: khiHien };
+})();
+
+/* ════════════════════════════════════════════════════════════════
+   SẮP XẾP: Mới nhất / Nhiều tym
+   Sắp lại cả DuLieu.ds để nút chồng trước, chồng sau trên trang chồng đi theo thứ tự đang xem.
+   ════════════════════════════════════════════════════════════════ */
+(function(){
+  var grid = $('grid'), thanh = $('sapXep'), trangThai = thanh.querySelector('.sap-tt');
+  var choChin = mang(grid.querySelectorAll('.card.soon'));
+  var che = 'moi', lan = 0;
+  function apDung(){
+    DuLieu.ds.sort(che === 'tym' ? theoTym : theoMoi);
+    var manh = document.createDocumentFragment();
+    DuLieu.ds.forEach(function(c){ manh.appendChild(c.the); });
+    choChin.forEach(function(s){ manh.appendChild(s); });
+    grid.appendChild(manh);
+  }
+  /* "Nhiều tym" cần số tym mới của mọi chồng: số nào chưa có thì hỏi gấp.
+     Chờ quá 3 giây thì sắp tạm bằng số đang có, đủ số thì sắp lại. */
+  function sapTym(){
+    var thieu = DuLieu.ds.filter(function(c){ return !Dem.moi(c.khoa); });
+    if(!thieu.length){ apDung(); return; }
+    var luot = ++lan;
+    trangThai.textContent = 'Đang đếm tym…';
+    var hen = setTimeout(function(){ if(luot === lan) apDung(); }, 3000);
+    Promise.all(thieu.map(function(c){ return Tym.tai(c.khoa, true); })).then(function(){
+      clearTimeout(hen);
+      if(luot !== lan) return;
+      trangThai.textContent = '';
+      apDung();
+    });
+  }
+  thanh.addEventListener('click', function(e){
+    var b = e.target.closest('.sap-nut');
+    if(!b || b.classList.contains('on')) return;
+    mang(thanh.querySelectorAll('.sap-nut')).forEach(function(x){
+      x.classList.toggle('on', x === b);
+      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
+    });
+    che = b.getAttribute('data-che');
+    lan++;
+    trangThai.textContent = '';
+    if(che === 'tym') sapTym(); else apDung();
+  });
 })();
 
 /* ════════════════════════════════════════════════════════════════
@@ -2050,7 +2207,11 @@ var Review = (function(){
    ════════════════════════════════════════════════════════════════ */
 var TrangChong = (function(){
   var dang = null;
-  function veLuot(c, v){ if(dang === c && v !== null) $('tcLuot').textContent = '🍽️ ' + v + ' người đã ghé thăm chồng'; }
+  function veLuot(c){
+    if(dang !== c) return;
+    var v = Dem.soCu(c.khoaLuot);
+    $('tcLuot').textContent = '🍽️ ' + (v === null ? '…' : v) + ' người đã ghé thăm chồng';
+  }
   function nutLink(c, l){
     var a = document.createElement('a');
     a.className = 'visit';
@@ -2065,7 +2226,7 @@ var TrangChong = (function(){
         Cong21.hoi(c.khoa, function(){ a.choQua = true; a.click(); });
         return;
       }
-      Dem.cong(c.khoaLuot).then(function(v){ veLuot(c, v); });
+      Dem.cong(c.khoaLuot).then(function(){ veLuot(c); });
     });
     return a;
   }
@@ -2078,18 +2239,18 @@ var TrangChong = (function(){
     cu.parentNode.replaceChild(anh, cu);
 
     $('tcTen').textContent = c.ten;
-    $('tcTags').innerHTML = c.tags.map(function(t){
-      return '<span class="tag' + (t.nguoiLon ? ' adult' : '') + '">' + esc(t.chu) + '</span>';
-    }).join('');
+    $('tcTags').innerHTML = (c.moi ? '<span class="tag tag-moi">✨ Mới lên kệ</span>' : '') +
+      c.tags.map(function(t){
+        return '<span class="tag' + (t.nguoiLon ? ' adult' : '') + '">' + esc(t.chu) + '</span>';
+      }).join('');
 
     var oTym = $('tcTym');
     oTym.innerHTML = '<button class="fav" type="button"><span class="heart">♥</span> <span class="fav-n">…</span></button>';
     Tym.gan(oTym.firstChild, c.khoa);
     Tym.tai(c.khoa, true);
 
-    $('tcLuot').textContent = '';
-    veLuot(c, Dem.soCu(c.khoaLuot));
-    Dem.lay(c.khoaLuot, true).then(function(v){ veLuot(c, v); });
+    veLuot(c);
+    Dem.lay(c.khoaLuot, true).then(function(){ veLuot(c); });
 
     var links = $('tcLinks');
     links.innerHTML = '';
@@ -2107,6 +2268,7 @@ var TrangChong = (function(){
       fb.appendChild(a);
     }
     $('tcNen').textContent = c.nenTang;
+    $('tcNgay').textContent = c.ngay ? '🍒 Lên kệ ngày ' + inNgay(c.ngay) : '';
     $('tcLore').innerHTML = c.loreHTML || '<p>Lore đang được viết...</p>';
     Review.moTrang(c);
 
@@ -2129,15 +2291,17 @@ var TrangChong = (function(){
 
 /* ════════════════════════════════════════════════════════════════
    BẢNG XẾP HẠNG: Top chồng iu (tym) và Top mukbang (lượt bấm link)
-   Bấm vào một dòng là mở trang chồng đó.
+   Mở ra là hiện ngay số đang có, số mới về thì tự xếp lại. Bấm vào một dòng là mở trang chồng đó.
    ════════════════════════════════════════════════════════════════ */
 (function(){
   var hop = $('bxhOverlay'), than = $('bxhBody'), ghiChu = $('bxhNote');
-  var tab = 'tym', lanTai = 0;
-  function so(c){ return Dem.soCu(tab === 'tym' ? c.khoa : c.khoaLuot); }
+  var tab = 'tym', henVe = null;
+  function khoa(c){ return tab === 'tym' ? c.khoa : c.khoaLuot; }
   function ve(){
+    clearTimeout(henVe);
+    henVe = null;
     var ds = DuLieu.ds.slice().sort(function(a, b){
-      var x = so(a), y = so(b);
+      var x = Dem.soCu(khoa(a)), y = Dem.soCu(khoa(b));
       return (y === null ? -1 : y) - (x === null ? -1 : x);
     });
     ghiChu.textContent = tab === 'click'
@@ -2145,7 +2309,7 @@ var TrangChong = (function(){
       : 'Xếp theo số tym mọi người thả cho từng chồng.';
     var huy = ['👑', '🥈', '🥉'];
     than.innerHTML = ds.map(function(c, i){
-      var v = so(c);
+      var v = Dem.soCu(khoa(c));
       var diem = (v === null) ? '…' : v + (tab === 'click' ? ' lượt' : ' 💗');
       var anh = (c.anh && !anhHong[c.anh])
         ? '<img class="rank-anh" src="' + esc(c.anh) + '" alt="" loading="lazy" data-chu="' + esc(c.chu) + '">'
@@ -2155,6 +2319,13 @@ var TrangChong = (function(){
         '<span class="rank-name">' + esc(c.tenChuan) + '</span>' +
         '<span class="rank-score">' + diem + '</span></a>';
     }).join('');
+  }
+  /* số về lẻ tẻ thì gom lại vẽ một lần cho đỡ giật */
+  function veSau(){ if(!henVe && !hop.classList.contains('is-hidden')) henVe = setTimeout(ve, 150); }
+  /* tab đang xem hỏi gấp, tab kia hỏi nền để chuyển tab là có sẵn số */
+  function tai(){
+    DuLieu.ds.forEach(function(c){ Dem.lay(khoa(c), true).then(veSau); });
+    DuLieu.ds.forEach(function(c){ Dem.lay(tab === 'tym' ? c.khoaLuot : c.khoa).then(veSau); });
   }
   /* ảnh lỗi trong bảng xếp hạng thì thay bằng quả cherry */
   than.addEventListener('error', function(e){
@@ -2168,12 +2339,7 @@ var TrangChong = (function(){
   $('bxhOpen').addEventListener('click', function(){
     Khung.mo(hop);
     ve();
-    if(Date.now() - lanTai < 60000) return;
-    lanTai = Date.now();
-    DuLieu.ds.forEach(function(c){
-      if(Dem.soCu(c.khoa) === null) Dem.lay(c.khoa).then(ve);
-      Dem.lay(c.khoaLuot).then(ve);
-    });
+    tai();
   });
   mang(hop.querySelectorAll('.bxh-tab')).forEach(function(t){
     t.addEventListener('click', function(){
@@ -2181,6 +2347,7 @@ var TrangChong = (function(){
       t.classList.add('on');
       tab = t.getAttribute('data-tab');
       ve();
+      tai();
     });
   });
 })();
@@ -2189,11 +2356,16 @@ var TrangChong = (function(){
    ĐẾM KHÁCH: mỗi phiên trình duyệt chỉ cộng 1 lần
    ════════════════════════════════════════════════════════════════ */
 (function(){
-  var da = false;
+  var o = $('visitCount'), da = false;
+  function ve(){
+    var v = Dem.soCu('visits');
+    if(v !== null) o.innerHTML = 'Đã có <b>' + v + '</b> lượt ghé vườn 🍒';
+  }
   try { da = !!sessionStorage.getItem('sherry-visited'); } catch(e){}
-  (da ? Dem.lay('visits', true) : Dem.cong('visits')).then(function(v){
+  ve();
+  (da ? Dem.lay('visits') : Dem.cong('visits')).then(function(v){
     if(v === null) return;
-    $('visitCount').innerHTML = 'Đã có <b>' + v + '</b> lượt ghé vườn 🍒';
+    ve();
     try { sessionStorage.setItem('sherry-visited', '1'); } catch(e){}
   });
 })();
@@ -2211,135 +2383,6 @@ var TrangChong = (function(){
 })();
 
 /* ════════════════════════════════════════════════════════════════
-   NHÃN MỚI + SẮP XẾP
-   Chồng có data-ngay trong SO_NGAY_MOI ngày gần nhất tự mang nhãn "Mới",
-   quá hạn thì nhãn tự tắt. Ngày ghi dạng 25/10/2026.
-   Sắp xếp: Mới nhất (chồng mang nhãn lên đầu, còn lại theo thứ tự trong file),
-   Nhiều tym, A → Z.
-   ════════════════════════════════════════════════════════════════ */
-(function(){
-  var SO_NGAY_MOI = 30;   /* nhãn "Mới" hiện bao nhiêu ngày kể từ ngày lên kệ */
-
-  function docNgay(s){
-    s = String(s || '').trim();
-    var m = /^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{4})$/.exec(s), y, mo, d;
-    if(m){ d = +m[1]; mo = +m[2]; y = +m[3]; }
-    else if((m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(s))){ y = +m[1]; mo = +m[2]; d = +m[3]; }
-    else return null;
-    var t = new Date(y, mo - 1, d);
-    return (t.getFullYear() === y && t.getMonth() === mo - 1 && t.getDate() === d) ? t : null;
-  }
-  function inNgay(t){
-    return ('0' + t.getDate()).slice(-2) + '/' + ('0' + (t.getMonth() + 1)).slice(-2) + '/' + t.getFullYear();
-  }
-
-  /* gắn ngày và nhãn cho từng chồng */
-  var homNay = new Date();
-  homNay.setHours(0, 0, 0, 0);
-  DuLieu.ds.forEach(function(c, i){
-    c.viTri = i;
-    c.ngay = docNgay(c.the.getAttribute('data-ngay'));
-    c.moi = !!c.ngay && (homNay - c.ngay) / 86400000 < SO_NGAY_MOI;
-    if(c.moi){
-      var n = document.createElement('span');
-      n.className = 'nhan-moi';
-      n.textContent = 'Mới';
-      c.the.appendChild(n);
-    }
-  });
-
-  /* trang chồng: thêm nhãn vào dòng tag và dòng ngày lên kệ */
-  var tcNen = $('tcNen'), tcNgay = document.createElement('p');
-  tcNgay.className = 'tc-ngay';
-  tcNen.parentNode.insertBefore(tcNgay, tcNen.nextSibling);
-  var moCu = TrangChong.mo;
-  TrangChong.mo = function(c){
-    moCu(c);
-    tcNgay.textContent = c.ngay ? '🍒 Lên kệ ngày ' + inNgay(c.ngay) : '';
-    if(c.moi){
-      var n = document.createElement('span');
-      n.className = 'tag tag-moi';
-      n.textContent = '✨ Mới lên kệ';
-      var tags = $('tcTags');
-      tags.insertBefore(n, tags.firstChild);
-    }
-  };
-
-  /* sắp xếp */
-  var grid = $('grid');
-  var choChin = mang(grid.querySelectorAll('.card.soon'));
-  var boSoSanh = (window.Intl && Intl.Collator) ? new Intl.Collator('vi', { sensitivity: 'base', numeric: true }) : null;
-  function theoMoi(a, b){
-    if(a.moi !== b.moi) return a.moi ? -1 : 1;
-    if(a.moi && a.ngay.getTime() !== b.ngay.getTime()) return b.ngay - a.ngay;
-    return a.viTri - b.viTri;
-  }
-  function theoTym(a, b){
-    var x = Dem.soCu(a.khoa), y = Dem.soCu(b.khoa);
-    return ((y === null ? -1 : y) - (x === null ? -1 : x)) || theoMoi(a, b);
-  }
-  function theoTen(a, b){
-    return (boSoSanh ? boSoSanh.compare(a.tenChuan, b.tenChuan) : a.tenChuan.localeCompare(b.tenChuan)) || theoMoi(a, b);
-  }
-  var cach = { moi: theoMoi, tym: theoTym, az: theoTen };
-  var che = 'moi', lanDem = 0;
-
-  /* sắp cả DuLieu.ds để nút chồng trước, chồng sau trên trang chồng đi theo thứ tự đang xem */
-  function apDung(){
-    DuLieu.ds.sort(cach[che]);
-    var manh = document.createDocumentFragment();
-    DuLieu.ds.forEach(function(c){ manh.appendChild(c.the); });
-    choChin.forEach(function(s){ manh.appendChild(s); });
-    grid.appendChild(manh);
-  }
-
-  var thanh = document.createElement('div');
-  thanh.className = 'sap-xep';
-  thanh.setAttribute('role', 'group');
-  thanh.setAttribute('aria-label', 'Sắp xếp danh sách chồng');
-  thanh.innerHTML = '<span class="sap-nhan">Sắp xếp</span>' +
-    '<span class="sap-hop">' +
-      '<button type="button" class="sap-nut on" data-che="moi" aria-pressed="true">Mới nhất</button>' +
-      '<button type="button" class="sap-nut" data-che="tym" aria-pressed="false">Nhiều tym</button>' +
-      '<button type="button" class="sap-nut" data-che="az" aria-pressed="false">A → Z</button>' +
-    '</span>' +
-    '<span class="sap-tt" aria-live="polite"></span>';
-  grid.parentNode.insertBefore(thanh, grid);
-  var trangThai = thanh.querySelector('.sap-tt');
-
-  /* "Nhiều tym" cần số tym của mọi chồng: lấy nốt số còn thiếu rồi mới sắp,
-     chờ quá 3 giây thì sắp tạm bằng số đang có, đủ số thì sắp lại */
-  function sapTym(){
-    var thieu = DuLieu.ds.filter(function(c){ return Dem.soCu(c.khoa) === null; });
-    if(!thieu.length){ apDung(); return; }
-    var lan = ++lanDem;
-    trangThai.textContent = 'Đang đếm tym…';
-    var hen = setTimeout(function(){ if(lan === lanDem) apDung(); }, 3000);
-    Promise.all(thieu.map(function(c){
-      if(xemThe) xemThe.unobserve(c.the);
-      return Tym.tai(c.khoa, true);
-    })).then(function(){
-      clearTimeout(hen);
-      if(lan !== lanDem) return;
-      trangThai.textContent = '';
-      apDung();
-    });
-  }
-
-  thanh.addEventListener('click', function(e){
-    var b = e.target.closest('.sap-nut');
-    if(!b || b.classList.contains('on')) return;
-    mang(thanh.querySelectorAll('.sap-nut')).forEach(function(x){
-      x.classList.toggle('on', x === b);
-      x.setAttribute('aria-pressed', x === b ? 'true' : 'false');
-    });
-    che = b.getAttribute('data-che');
-    lanDem++;
-    trangThai.textContent = '';
-    if(che === 'tym') sapTym(); else apDung();
-  });
-  apDung();
-})();/* ════════════════════════════════════════════════════════════════
    ĐIỀU HƯỚNG
      #                 cổng vườn
      #garden           danh sách chồng
@@ -2404,6 +2447,9 @@ var DieuHuong = (function(){
   dieuHuong();
   return dieuHuong;
 })();
+
+/* đếm tym cả vườn theo thứ tự đang xếp: thẻ đầu có số trước, thường xong từ lúc khách còn đứng ở cổng */
+DuLieu.ds.forEach(function(c){ Tym.tai(c.khoa); });
 </script>
 </body>
 </html>
