@@ -1724,7 +1724,7 @@ var Khung = (function(){
 var Dem = (function(){
   var API = 'https://abacus.jasoncameron.dev', LUU = 'sherry-dem';
   /* CUA_SO tính dư nửa giây cho chắc, phòng mạng chậm làm lệnh tới máy chủ dồn lại */
-  var TOI_DA = 25, TOI_DA_NEN = 20, CUA_SO = 10500, CUNG_LUC = 6, TUOI = 300000, CHO_TOI_DA = 10000;
+  var TOI_DA = 25, TOI_DA_NEN = 20, CUA_SO = 10500, CUNG_LUC = 6, TUOI = 300000, CHO_TOI_DA = 30000;
   var hang = [], dangChay = 0, moc = [], hen = null;
   var nho = {}, lucLay = {}, lucCong = {}, dangHoi = {};
   try { nho = JSON.parse(localStorage.getItem(LUU)) || {}; } catch(e){}
@@ -1745,7 +1745,7 @@ var Dem = (function(){
   function goi(duong, conThu, phieu){
     return new Promise(function(xong){
       var viec = { gap: phieu.gap, chay: function(){
-        var ngat = window.AbortController ? new AbortController() : null;
+        var ngat = (window.AbortController && duong.indexOf('get/') === 0) ? new AbortController() : null;   /* chỉ cắt lệnh đọc số khi chờ quá lâu, lệnh cộng luôn chờ tới khi xong để khỏi cộng trùng */
         var hgio = ngat && setTimeout(function(){ ngat.abort(); }, CHO_TOI_DA);
         function xongViec(){ clearTimeout(hgio); dangChay--; chay(); }
         fetch(API + '/' + duong, ngat ? { signal: ngat.signal } : {}).then(function(r){
